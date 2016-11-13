@@ -6,7 +6,7 @@ import model.RightAngleTrigonometric;
 import javax.swing.*;
 import java.awt.*;
 
-public class RightAngleTrigonometricForm extends ProblemForm {
+public class RightAngleTrigonometricForm extends AbstractProblemForm {
 
     private RightAngleTrigonometric question;
     private JLabel imageLabel;

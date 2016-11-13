@@ -9,12 +9,12 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
-public class AnswerForm extends JPanel {
+class AnswerForm extends JPanel {
     private JButton submitButton, showButton;
     private JTextField answerField;
     private Problem problem;
 
-    public AnswerForm(Problem problem) {
+    AnswerForm(Problem problem) {
         super(new GridLayout(1, 3));
         this.problem = problem;
         submitButton = new JButton("Submit");
@@ -44,29 +44,30 @@ public class AnswerForm extends JPanel {
         IconFontSwing.register(GoogleMaterialDesignIcons.getIconFont());
 
         submitButton.addActionListener(e -> {
-            if (isAnswerCorrect()) {
-//                    JOptionPane.showMessageDialog(null, "The answer is wrong", "Answer", JOptionPane.WARNING_MESSAGE, IconFontSwing.buildIcon(GoogleMaterialDesignIcons.ADD, 20, new Color(0, 150, 0)));
-                System.out.println("right");
-            } else {
-                System.out.println("wrong");
+            if (isAnswerCorrect() != null) {
+                if (isAnswerCorrect()) {
+                    JOptionPane.showMessageDialog(null, "The answer is correct", "Correct", JOptionPane.WARNING_MESSAGE, IconFontSwing.buildIcon(GoogleMaterialDesignIcons.CHECK, 32, new Color(0, 150, 0)));
+                } else if (!isAnswerCorrect()) {
+                    JOptionPane.showMessageDialog(null, "The answer is wrong", "Incorrect", JOptionPane.WARNING_MESSAGE, IconFontSwing.buildIcon(GoogleMaterialDesignIcons.CLEAR, 32, new Color(255, 0, 19)));
+                }
             }
         });
-        showButton.addActionListener(e -> System.out.println(problem.getAnswer()));
+        showButton.addActionListener(e -> JOptionPane.showMessageDialog(null, "The answer is: " + problem.getAnswer(), "Answer", JOptionPane.INFORMATION_MESSAGE, IconFontSwing.buildIcon(GoogleMaterialDesignIcons.IMPORT_CONTACTS, 32, new Color(179, 138, 47))));
         add(answerField);
         add(submitButton);
         add(showButton);
     }
 
-    private boolean isAnswerCorrect() {
+    private Boolean isAnswerCorrect() {
         try {
             String input = answerField.getText().replaceAll("\\.0", "");
             if (input.equals("Enter answer")) {
-                return false;
+                return null;
             }
             return problem.checkAnswer(input);
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Please enter numbers only");
-            return false;
+            JOptionPane.showMessageDialog(null, "Please enter numbers only", "Error", JOptionPane.WARNING_MESSAGE, IconFontSwing.buildIcon(GoogleMaterialDesignIcons.ERROR_OUTLINE, 32, new Color(255, 0, 19)));
+            return null;
         }
     }
 

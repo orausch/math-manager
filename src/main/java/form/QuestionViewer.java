@@ -1,6 +1,6 @@
 package form;
 
-import form.question.ProblemForm;
+import form.question.AbstractProblemForm;
 import form.question.QuadraticForm;
 import form.question.RightAngleTrigonometricForm;
 import jiconfont.icons.GoogleMaterialDesignIcons;
@@ -15,13 +15,13 @@ import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
 
-public class QuestionViewer {
+class QuestionViewer {
     private static Problem problem;
     private static JFrame frame;
     private static JPanel scrollerPanel, questionPanel;
     private static JList<Problem> list;
     private static Problem[] problems;
-    private static ProblemForm currentProblem;
+    private static AbstractProblemForm currentProblem;
     private static JButton backButton;
     private static JButton addButton;
     private static JButton deleteButton;

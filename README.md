@@ -1,5 +1,5 @@
 # Math Manager
-A Swing based Math Problem generation program. 
+A Swing based math problem generation program. 
 
 ## Features
  * Generate various math problems randomly

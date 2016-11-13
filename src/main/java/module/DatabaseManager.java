@@ -1,6 +1,5 @@
 package module;
 
-import factory.RightAngleTrigonometricProblemFactory;
 import model.Problem;
 import model.Quadratic;
 import model.RightAngleTrigonometric;
@@ -47,9 +46,6 @@ public class DatabaseManager {
             stat.execute(CREATE_PROBLEMS_TABLE);
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-        for (int i = 0; i < 5; i++) {
-            insertProblem(RightAngleTrigonometricProblemFactory.generateRightAngleTrigonometricProblem(3));
         }
     }
 

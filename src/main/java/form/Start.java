@@ -6,7 +6,6 @@ import jiconfont.swing.IconFontSwing;
 import javax.swing.*;
 import java.awt.*;
 
-
 public class Start {
     private static JFrame frame;
     private static JPanel panel;
@@ -45,7 +44,6 @@ public class Start {
         constraints.insets = new Insets(1, 5, 5, 1);
         panel.add(generateButton, constraints);
 
-
         browseProblemsButton = new JButton("Browse Problems");
         browseProblemsButton.setHorizontalAlignment(SwingConstants.LEFT);
         browseProblemsButton.setPreferredSize(buttonSize);
@@ -76,6 +74,10 @@ public class Start {
             frame.dispose();
             QuestionViewer.show();
 
+        });
+        generateButton.addActionListener(e -> {
+            frame.dispose();
+            new GenerateQuestion();
         });
     }
 

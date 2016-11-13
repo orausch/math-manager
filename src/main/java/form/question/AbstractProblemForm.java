@@ -5,10 +5,10 @@ import model.Problem;
 
 import javax.swing.*;
 
-public abstract class ProblemForm extends JPanel {
+public abstract class AbstractProblemForm extends JPanel {
     private Problem problem;
 
-    public ProblemForm(Problem problem) {
+    AbstractProblemForm(Problem problem) {
         this.problem = problem;
     }
 }
