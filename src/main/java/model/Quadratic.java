@@ -24,11 +24,10 @@ public class Quadratic extends Problem {
         this.question = question;
     }
 
-    public Quadratic(double a, double b, double c, String answer, String question) {
+    public Quadratic(double a, double b, double c, String question) {
         this.a = a;
         this.b = b;
         this.c = c;
-        this.answer = answer;
         this.question = question;
     }
 
@@ -46,6 +45,8 @@ public class Quadratic extends Problem {
         this.a = a;
         this.b = b;
         this.c = c;
+        setQuestion("Solve for x: " + toString());
+        setAnswer((String.valueOf(getSolution()[0]) + "," + String.valueOf(getSolution()[1])).replaceAll("\\.0", ""));
     }
 
     public void setAnswer(String answer) {
@@ -148,7 +149,7 @@ public class Quadratic extends Problem {
 
     @Override
     public boolean checkAnswer(String input) {
-        String[] inputSolutions = input.split(",");
+        String[] inputSolutions = input.trim().replaceAll("\\.0", "").split(",");
         double[] inputSolutionsDouble = new double[2];
         for (int i = 0; i < inputSolutions.length; i++) {
             inputSolutionsDouble[i] = Double.parseDouble(inputSolutions[i]);

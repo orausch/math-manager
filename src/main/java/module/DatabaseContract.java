@@ -16,6 +16,7 @@ class DatabaseContract {
         //Types of questions
         protected static final int TYPE_QUADRATIC = 0;
         protected static final int TYPE_TRIG = 1;
+        protected static final int TYPE_TEXT = 2;
 
     }
 }

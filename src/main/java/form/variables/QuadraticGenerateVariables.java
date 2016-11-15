@@ -2,6 +2,7 @@ package form.variables;
 
 import factory.QuadraticProblemFactory;
 import model.Problem;
+import model.Quadratic;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -9,14 +10,14 @@ import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.util.Hashtable;
 
-public class QuadraticVariables extends AbstractProblemVariables {
+public class QuadraticGenerateVariables extends AbstractProblemVariables {
 
     private JSlider difficultySelector;
     private JCheckBox isCustomDifficulty;
     private JSpinner aSpinner, bSpinner, xSpinner;
     private JLabel aLabel, xLabel, bLabel;
 
-    public QuadraticVariables() {
+    public QuadraticGenerateVariables() {
         setLayout(new GridLayout(2, 1));
         difficultySelector = new JSlider(JSlider.HORIZONTAL, 0, 3, 1);
         difficultySelector.setMinorTickSpacing(1);
@@ -105,6 +106,20 @@ public class QuadraticVariables extends AbstractProblemVariables {
             {2, 10, 10},
             {3, 20, 20}
     };
+
+    @Override
+    public Problem getProblem(String question, String answer) {
+        Quadratic problem;
+        if (isCustomDifficulty.isSelected()) {
+            problem = QuadraticProblemFactory.generateSolveQuadraticQuestion((int) aSpinner.getValue(), (int) bSpinner.getValue(), (int) xSpinner.getValue());
+        } else {
+            int difficulty = difficultySelector.getValue();
+            problem = QuadraticProblemFactory.generateSolveQuadraticQuestion(VAL[difficulty][0], VAL[difficulty][1], VAL[difficulty][2]);
+        }
+        problem.setQuestion(question);
+        problem.setAnswer(answer);
+        return problem;
+    }
 
     @Override
     public Problem getProblem() {

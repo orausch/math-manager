@@ -3,6 +3,7 @@ package module;
 import model.Problem;
 import model.Quadratic;
 import model.RightAngleTrigonometric;
+import model.Text;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,7 +42,6 @@ public class DatabaseManager {
                 + DatabaseContract.Problems.COLUMN_DATA + " TEXT,"
                 + DatabaseContract.Problems.COLUMN_ANSWER + " TEXT)";
 
-
         try {
             stat.execute(CREATE_PROBLEMS_TABLE);
         } catch (SQLException e) {
@@ -69,6 +69,10 @@ public class DatabaseManager {
                         e.printStackTrace();
                         break;
                     }
+                } else if (rs.getInt(DatabaseContract.Problems.COLUMN_PROBLEM_TYPE) == DatabaseContract.Problems.TYPE_TEXT) {
+                    Text text = new Text(rs.getString(DatabaseContract.Problems.COLUMN_QUESTION), rs.getString(DatabaseContract.Problems.COLUMN_ANSWER));
+                    text.setId(rs.getInt(DatabaseContract.Problems.COLUMN_ID));
+                    problems.add(text);
                 }
             }
             Problem[] problemsArray = new Problem[problems.size()];
@@ -82,7 +86,7 @@ public class DatabaseManager {
         }
     }
 
-    private void insertProblem(Problem problem) {
+    public void insertProblem(Problem problem) {
         String statement = "INSERT INTO "
                 + DatabaseContract.Problems.TABLE_NAME
                 + "("
@@ -108,6 +112,12 @@ public class DatabaseManager {
                 e.printStackTrace();
                 return;
             }
+        } else if (problem instanceof Text) {
+            Text text = (Text) problem;
+            statement = statement + String.valueOf(DatabaseContract.Problems.TYPE_TEXT) + ","
+                    + "\'" + text.getQuestion() + "\', "
+                    + "\' N/A \', "
+                    + "\'" + text.getAnswer() + "\')";
         }
         try {
             stat.execute(statement);

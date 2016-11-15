@@ -4,8 +4,9 @@ import model.Problem;
 
 import javax.swing.*;
 
-abstract class AbstractProblemVariables extends JPanel {
+public abstract class AbstractProblemVariables extends JPanel {
 
+    public abstract Problem getProblem(String question, String answer);
     public abstract Problem getProblem();
 
 }

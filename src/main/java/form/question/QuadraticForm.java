@@ -12,7 +12,6 @@ public class QuadraticForm extends AbstractProblemForm {
 
     public QuadraticForm(Quadratic quadratic) {
         super(quadratic);
-        setLayout(new GridLayout(0, 1));
         questionLabel = new JLabel(Util.superscript(quadratic.getQuestion()));
         questionLabel.setFont(new Font(questionLabel.getFont().getName(), Font.BOLD, 20));
         add(questionLabel);

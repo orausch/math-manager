@@ -3,11 +3,13 @@ package form;
 import form.question.AbstractProblemForm;
 import form.question.QuadraticForm;
 import form.question.RightAngleTrigonometricForm;
+import form.question.TextForm;
 import jiconfont.icons.GoogleMaterialDesignIcons;
 import jiconfont.swing.IconFontSwing;
 import model.Problem;
 import model.Quadratic;
 import model.RightAngleTrigonometric;
+import model.Text;
 import module.DatabaseManager;
 
 import javax.swing.*;
@@ -26,7 +28,6 @@ class QuestionViewer {
     private static JButton addButton;
     private static JButton deleteButton;
     private static JScrollPane scrollPane;
-
 
     private static void initUI() {
         scrollerPanel = new JPanel(new BorderLayout());
@@ -103,12 +104,14 @@ class QuestionViewer {
             if (problems[index] instanceof Quadratic) {
                 questionPanel.removeAll();
                 currentProblem = new QuadraticForm((Quadratic) problems[index]);
-                questionPanel.add(currentProblem, BorderLayout.NORTH);
             } else if (problems[index] instanceof RightAngleTrigonometric) {
                 questionPanel.removeAll();
                 currentProblem = new RightAngleTrigonometricForm(problems[index]);
-                questionPanel.add(currentProblem, BorderLayout.NORTH);
+            } else if (problems[index] instanceof Text) {
+                questionPanel.removeAll();
+                currentProblem = new TextForm(problems[index]);
             }
+            questionPanel.add(currentProblem, BorderLayout.NORTH);
             questionPanel.add(new AnswerForm(problems[index]), BorderLayout.SOUTH);
 
             questionPanel.revalidate();

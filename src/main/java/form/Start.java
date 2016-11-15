@@ -77,7 +77,7 @@ public class Start {
         });
         generateButton.addActionListener(e -> {
             frame.dispose();
-            new GenerateQuestion();
+            new CreateQuestion();
         });
     }
 
