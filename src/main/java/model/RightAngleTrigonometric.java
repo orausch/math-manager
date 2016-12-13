@@ -12,6 +12,11 @@ public class RightAngleTrigonometric extends Problem implements Serializable {
     private final int UNIT_MM = 0;
     private final int UNIT_CM = 1;
     private final int UNIT_M = 2;
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
     private final int UNIT_KM = 3;
     private String question;
     private char target;

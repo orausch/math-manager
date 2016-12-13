@@ -1,5 +1,6 @@
 package form.variables;
 
+import factory.RightAngleTrigonometricProblemFactory;
 import model.Problem;
 
 import javax.swing.*;
@@ -42,21 +43,36 @@ public class TrigonometricGenerateVariables extends AbstractProblemVariables {
         setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10), BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED), "Difficulty")));
     }
 
+    @Override
+    public Problem getProblem(String question, String answer) {
+        int given = 0;
+        if (findSide.isSelected()) {
+            if (comboBox.getSelectedIndex() == 0) given = 1;
+            if (comboBox.getSelectedIndex() == 1) given = 3;
+        } else if (findAngle.isSelected()) {
+            if (comboBox.getSelectedIndex() == 0) given = 0;
+            if (comboBox.getSelectedIndex() == 1) given = 2;
+        }
+        return RightAngleTrigonometricProblemFactory.generateRightAngleTrigonometricProblem(given, answer);
+
+    }
+
+    @Override
+    public Problem getProblem() {
+        int given = 0;
+        if (findSide.isSelected()) {
+            if (comboBox.getSelectedIndex() == 0) given = 1;
+            if (comboBox.getSelectedIndex() == 1) given = 3;
+        } else if (findAngle.isSelected()) {
+            if (comboBox.getSelectedIndex() == 0) given = 0;
+            if (comboBox.getSelectedIndex() == 1) given = 2;
+        }
+        return RightAngleTrigonometricProblemFactory.generateRightAngleTrigonometricProblem(given);
+    }
+
     private void enableButtons(boolean enabled) {
         findAngle.setEnabled(enabled);
         findSide.setEnabled(enabled);
         comboBox.setEnabled(enabled);
     }
-
-
-    @Override
-    public Problem getProblem(String question, String answer) {
-        return null;
-    }
-
-    @Override
-    public Problem getProblem() {
-        return null;
-    }
-
 }

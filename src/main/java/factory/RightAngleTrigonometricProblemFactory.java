@@ -12,6 +12,15 @@ public class RightAngleTrigonometricProblemFactory {
     private static final char[] possibleTargetAngles = {'α', 'β', 'θ'};
 
     public static RightAngleTrigonometric generateRightAngleTrigonometricProblem(int given) {
+       return generateProblem(given);
+    }
+
+    public static RightAngleTrigonometric generateRightAngleTrigonometricProblem(int given, String question) {
+        RightAngleTrigonometric problem = generateProblem(given);
+        problem.setQuestion(question);
+        return problem;
+    }
+    private static RightAngleTrigonometric generateProblem(int given){
         double[] sides = new double[3];
         double[] angles = new double[2];
         boolean[] isGivenSide = new boolean[3];

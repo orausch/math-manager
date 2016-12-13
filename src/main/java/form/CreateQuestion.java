@@ -3,6 +3,7 @@ package form;
 import form.variables.AbstractProblemVariables;
 import form.variables.QuadraticCreateVariables;
 import form.variables.QuadraticGenerateVariables;
+import form.variables.TrigonometricGenerateVariables;
 import model.Problem;
 import model.Text;
 import module.DatabaseManager;
@@ -12,6 +13,8 @@ import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 class CreateQuestion extends JFrame {
     private final String[] questionGenerateTypes = {"Quadratic", "Trigonometric"};
@@ -72,7 +75,45 @@ class CreateQuestion extends JFrame {
         setResizable(true);
         setTitle("New Question");
         pack();
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                e.getWindow().dispose();
+                Start.show();
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+
+            }
+
+        });
         setLocationRelativeTo(null);
         setVisible(true);
     }
@@ -97,6 +138,10 @@ class CreateQuestion extends JFrame {
         textpanelCreate = new TextPanel(false, true);
         createTabPanel.add(textpanelCreate, BorderLayout.CENTER);
         pane.addTab("Create Question", createTabPanel);
+
+    }
+
+    private void close() {
 
     }
 
@@ -176,6 +221,8 @@ class CreateQuestion extends JFrame {
 
                 break;
             case "Trigonometric":
+                settingPanel = new TrigonometricGenerateVariables();
+                generateTabPanel.add(settingPanel, BorderLayout.SOUTH);
                 break;
         }
         settingPanel.revalidate();

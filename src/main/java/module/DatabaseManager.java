@@ -1,5 +1,7 @@
 package module;
 
+import factory.QuadraticProblemFactory;
+import factory.RightAngleTrigonometricProblemFactory;
 import model.Problem;
 import model.Quadratic;
 import model.RightAngleTrigonometric;
@@ -44,6 +46,17 @@ public class DatabaseManager {
 
         try {
             stat.execute(CREATE_PROBLEMS_TABLE);
+            //insert projects for debugging
+            insertProblem(QuadraticProblemFactory.generateSolveQuadraticQuestion(1,5,10));
+            insertProblem(QuadraticProblemFactory.generateSolveQuadraticQuestion(1,5,10));
+            insertProblem(QuadraticProblemFactory.generateSolveQuadraticQuestion(1,5,10));
+            insertProblem(QuadraticProblemFactory.generateSolveQuadraticQuestion(1,5,10));
+            insertProblem(QuadraticProblemFactory.generateSolveQuadraticQuestion(1,5,10));
+
+            insertProblem(RightAngleTrigonometricProblemFactory.generateRightAngleTrigonometricProblem(0));
+            insertProblem(RightAngleTrigonometricProblemFactory.generateRightAngleTrigonometricProblem(1));
+            insertProblem(RightAngleTrigonometricProblemFactory.generateRightAngleTrigonometricProblem(2));
+            insertProblem(RightAngleTrigonometricProblemFactory.generateRightAngleTrigonometricProblem(3));
         } catch (SQLException e) {
             e.printStackTrace();
         }
