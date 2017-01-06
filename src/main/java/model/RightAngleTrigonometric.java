@@ -37,28 +37,33 @@ public class RightAngleTrigonometric extends Problem implements Serializable {
     private final int TOP_RIGHT = 1;
     private final int BOT_LEFT = 2;
     private final int BOT_RIGHT = 3;
+    private final int IMAGE_HEIGHT = 500;
 
     public BufferedImage getImage() {
-        final int padding = 50;
-        final int rectangleSize = 10;
+        final int PADDING = 50;
+        final int RECTANGLE_SIZE = 10;
 
-        BufferedImage image = new BufferedImage(500 + padding, 500 + padding, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage image = new BufferedImage(IMAGE_HEIGHT + PADDING * 2, IMAGE_HEIGHT + PADDING * 2, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = image.createGraphics();
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        //DEBUGGING
+        g.setColor(Color.red);
+        g.fillRect(0, 0, IMAGE_HEIGHT + 2* PADDING, IMAGE_HEIGHT + 2 *PADDING);
+
 
         //Randomising rotation of the triangle
-        topLeftX = padding;
-        topLeftY = padding;
+        topLeftX = (int) (PADDING + ((IMAGE_HEIGHT - getScaledSides()[0]) / 2));
+        topLeftY = PADDING;
 
-        topRightX = (int) (padding + sides[0] * 10);
-        topRightY = padding;
+        topRightX = (int) (PADDING + ((IMAGE_HEIGHT - getScaledSides()[0]) / 2) + getScaledSides()[0]);
+        topRightY = PADDING;
 
-        botLeftX = padding;
-        botLeftY = (int) (padding + sides[1] * 10);
+        botLeftX = (int) (PADDING + ((IMAGE_HEIGHT - getScaledSides()[0]) / 2));
+        botLeftY = (int) (PADDING + getScaledSides()[1]);
 
-        botRightX = (int) (padding + sides[0] * 10);
-        botRightY = (int) (padding + sides[1] * 10);
+        botRightX = (int) (PADDING + ((IMAGE_HEIGHT - getScaledSides()[0]) / 2) + getScaledSides()[0]);
+        botRightY = (int) (PADDING + getScaledSides()[1]);
 
         int cornerToSkip = (int) Util.getRandomNumber(0, 3);
 
@@ -66,23 +71,38 @@ public class RightAngleTrigonometric extends Problem implements Serializable {
         switch (cornerToSkip) {
             case TOP_LEFT:
                 drawTriangle(g, topRightX, topRightY, botLeftX, botLeftY, botRightX, botRightY);
-                g.draw(new Rectangle(botRightX - rectangleSize, botRightY - rectangleSize, rectangleSize, rectangleSize));
+                g.draw(new Rectangle(botRightX - RECTANGLE_SIZE, botRightY - RECTANGLE_SIZE, RECTANGLE_SIZE, RECTANGLE_SIZE));
                 break;
             case TOP_RIGHT:
                 drawTriangle(g, topLeftX, topLeftY, botLeftX, botLeftY, botRightX, botRightY);
-                g.draw(new Rectangle(padding, botRightY - rectangleSize, rectangleSize, rectangleSize));
+                g.draw(new Rectangle(topLeftX, botRightY - RECTANGLE_SIZE, RECTANGLE_SIZE, RECTANGLE_SIZE));
                 break;
             case BOT_LEFT:
                 drawTriangle(g, topLeftX, topLeftY, botRightX, botRightY, topRightX, topRightY);
-                g.draw(new Rectangle(botRightX - rectangleSize, padding, rectangleSize, rectangleSize));
+                g.draw(new Rectangle(botRightX - RECTANGLE_SIZE, PADDING, RECTANGLE_SIZE, RECTANGLE_SIZE));
                 break;
             case BOT_RIGHT:
                 drawTriangle(g, topLeftX, topLeftY, botLeftX, botLeftY, topRightX, topRightY);
-                g.draw(new Rectangle(padding, padding, rectangleSize, rectangleSize));
+                g.draw(new Rectangle(topLeftX, topLeftY, RECTANGLE_SIZE, RECTANGLE_SIZE));
                 break;
         }
         drawLabels(g, cornerToSkip);
         return image;
+    }
+
+    private double[] getScaledSides() {
+        int longestSide = sides[0] > sides[1] ? 0 : 1;
+
+        double[] scaledSides = new double[3];
+
+        scaledSides[longestSide] = IMAGE_HEIGHT;
+
+        double scalingFactor = IMAGE_HEIGHT / sides[longestSide];
+
+        scaledSides[longestSide == 0 ? 1 : 0] = sides[longestSide == 0 ? 1 : 0] * scalingFactor;
+
+        scaledSides[2] = sides[2] * scalingFactor;
+        return scaledSides;
     }
 
     private void drawTriangle(Graphics2D g, int x1, int y1, int x2, int y2, int x3, int y3) {

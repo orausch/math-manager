@@ -16,6 +16,10 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 class QuestionViewer {
     private static Problem problem;
@@ -74,7 +78,7 @@ class QuestionViewer {
             Start.show();
             frame.dispose();
         });
-        list.addListSelectionListener(e -> selectProblem());
+       list.addListSelectionListener(e -> selectProblem());
         deleteButton.addActionListener(e -> {
             DatabaseManager db = new DatabaseManager();
             int index = list.getSelectedIndex();
