@@ -53,8 +53,10 @@ public class DatabaseManager {
         try {
             stat.execute(CREATE_PROBLEMS_TABLE);
             stat.execute(CREATE_TESTS_TABLE);
-            //insert projects for debugging
-            insertProblem(QuadraticProblemFactory.generateSolveQuadraticQuestion(1, 5, 10));
+
+            //insert data for debugging
+            Quadratic quadratic = QuadraticProblemFactory.generateSolveQuadraticQuestion(1, 5, 10);
+            insertProblem(quadratic);
             insertProblem(QuadraticProblemFactory.generateSolveQuadraticQuestion(1, 5, 10));
             insertProblem(QuadraticProblemFactory.generateSolveQuadraticQuestion(1, 5, 10));
             insertProblem(QuadraticProblemFactory.generateSolveQuadraticQuestion(1, 5, 10));
@@ -64,6 +66,10 @@ public class DatabaseManager {
             insertProblem(RightAngleTrigonometricProblemFactory.generateRightAngleTrigonometricProblem(1));
             insertProblem(RightAngleTrigonometricProblemFactory.generateRightAngleTrigonometricProblem(2));
             insertProblem(RightAngleTrigonometricProblemFactory.generateRightAngleTrigonometricProblem(3));
+
+            LinkedList<Problem> problems = new LinkedList<>();
+            problems.add(getProblem(1));
+            insertTest(new Test(problems, "test"));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -108,7 +114,8 @@ public class DatabaseManager {
 
     public Problem getProblem(int id) {
         try {
-            ResultSet rs = stat.executeQuery("SELECT * FROM " + DatabaseContract.Problems.TABLE_NAME + "WHERE " + DatabaseContract.Problems.COLUMN_ID + "=" + id);
+            ResultSet rs = stat.executeQuery("SELECT * FROM " + DatabaseContract.Problems.TABLE_NAME + " WHERE " + DatabaseContract.Problems.COLUMN_ID + "=" + 2);
+            rs.next();
             if (rs.getInt(DatabaseContract.Problems.COLUMN_PROBLEM_TYPE) == DatabaseContract.Problems.TYPE_QUADRATIC) {
                 Quadratic quadratic = new Quadratic(rs.getString(DatabaseContract.Problems.COLUMN_DATA),
                         rs.getString(DatabaseContract.Problems.COLUMN_ANSWER),
@@ -212,15 +219,19 @@ public class DatabaseManager {
 
     public Test[] getTestArray() {
         try {
-            ResultSet rs = stat.executeQuery("SELECT * FROM " + DatabaseContract.Tests.TABLE_NAME);
             ArrayList<Test> tests = new ArrayList<>();
+            ResultSet rs = stat.executeQuery("SELECT * FROM " + DatabaseContract.Tests.TABLE_NAME);
             while (rs.next()) {
                 LinkedList<Problem> problems = new LinkedList<>();
-                for (String s : rs.getString(DatabaseContract.Tests.COLUMN_PROBLEM_IDS).split(",")) {
-                    problems.add(getProblem(Integer.parseInt(s)));
+                String[] string = rs.getString(DatabaseContract.Tests.COLUMN_PROBLEM_IDS).split(",");
+                String testName = rs.getString(DatabaseContract.Tests.COLUMN_NAME);
+                int id = rs.getInt(DatabaseContract.Tests.COLUMN_ID);
+                //When it gets to this loop the second time around it closes the resultset
+                for (int i = 0; i < string.length; i++) {
+                    problems.add(getProblem(Integer.parseInt(string[i])));
                 }
-                Test test = new Test(problems, rs.getString(DatabaseContract.Tests.COLUMN_NAME));
-                test.setId(rs.getInt(DatabaseContract.Problems.COLUMN_ID));
+                Test test = new Test(problems, testName);
+                test.setId(id);
                 tests.add(test);
             }
             Test[] testsArray = new Test[tests.size()];

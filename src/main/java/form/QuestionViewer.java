@@ -19,10 +19,12 @@ import java.awt.event.WindowListener;
 class QuestionViewer {
     private static Problem problem;
     private static JFrame frame;
-    private static JPanel scrollerPanel, scrollerPanelTests, questionPanel;
-    private static JList<Problem> list;
+    private static JPanel scrollerPanelProblems, listsPanel, questionPanel;
+    private static JList<Problem> problemList;
     private static JList<Test> testList;
     private static Problem[] problems;
+    private static Test[] tests;
+
     private static AbstractProblemForm currentProblem;
     private static JButton showTestsButton;
     private static JButton addButton;
@@ -31,23 +33,26 @@ class QuestionViewer {
     private static boolean isPanelExpanded = false;
 
     private static void initUI() {
-        scrollerPanel = new JPanel(new BorderLayout());
-        scrollerPanelTests = new JPanel(new BorderLayout());
+        scrollerPanelProblems = new JPanel(new BorderLayout());
+        listsPanel = new JPanel(new BorderLayout());
 
         DatabaseManager db = new DatabaseManager();
         problems = db.getProblemsArray();
+        tests = db.getTestArray();
         db.close();
 
-        list = new JList<>(problems);
-        scrollPane = new JScrollPane(list, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        problemList = new JList<>(problems);
+        testList = new JList<>(tests);
 
-        list = new JList<>(problems);
-        scrollPane = new JScrollPane(list, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollerPanel.add(scrollPane, BorderLayout.CENTER);
+        scrollPane = new JScrollPane(problemList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+        problemList = new JList<>(problems);
+        scrollPane = new JScrollPane(problemList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollerPanelProblems.add(scrollPane, BorderLayout.CENTER);
 
         showTestsButton = new JButton("Show Tests");
         showTestsButton.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.ARROW_FORWARD, 20, new Color(0, 0, 0)));
-        scrollerPanel.add(showTestsButton, BorderLayout.SOUTH);
+        scrollerPanelProblems.add(showTestsButton, BorderLayout.SOUTH);
 
         JPanel buttonPanel = new JPanel(new GridLayout(1, 2));
         addButton = new JButton("Add");
@@ -58,17 +63,17 @@ class QuestionViewer {
         deleteButton.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.DELETE, 20, new Color(255, 0, 19)));
         buttonPanel.add(deleteButton, BorderLayout.EAST);
 
-        scrollerPanel.add(buttonPanel, BorderLayout.NORTH);
+        scrollerPanelProblems.add(buttonPanel, BorderLayout.NORTH);
 
         frame = new JFrame("Question Viewer");
         questionPanel = new JPanel(new BorderLayout());
         Border inner = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10), BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
         questionPanel.setBorder(BorderFactory.createCompoundBorder(inner, BorderFactory.createEmptyBorder(10, 10, 10, 10)));
-        list.setSelectedIndex(0);
+        problemList.setSelectedIndex(0);
         selectProblem();
-        scrollerPanelTests = new JPanel(new BorderLayout());
-        scrollerPanelTests.add(scrollerPanel, BorderLayout.EAST);
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollerPanelTests, questionPanel);
+        listsPanel = new JPanel(new BorderLayout());
+        listsPanel.add(scrollerPanelProblems, BorderLayout.EAST);
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, listsPanel, questionPanel);
         frame.add(splitPane);
         frame.setSize(1000, 1000);
         frame.setResizable(true);
@@ -80,8 +85,9 @@ class QuestionViewer {
     private static void initListeners() {
         showTestsButton.addActionListener(e -> {
             if(isPanelExpanded){
+                listsPanel.remove(testList);
             }else{
-
+                listsPanel.add(testList, BorderLayout.WEST);
             }
         });
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -123,20 +129,20 @@ class QuestionViewer {
             }
 
         });
-       list.addListSelectionListener(e -> selectProblem());
+       problemList.addListSelectionListener(e -> selectProblem());
         deleteButton.addActionListener(e -> {
             DatabaseManager db = new DatabaseManager();
-            int index = list.getSelectedIndex();
+            int index = problemList.getSelectedIndex();
             db.deleteProblem(problems[index]);
             problems = db.getProblemsArray();
             db.close();
-            list = new JList<>(problems);
-            list.setSelectedIndex(index);
-            list.addListSelectionListener(a -> selectProblem());
-            scrollerPanel.remove(scrollPane);
-            scrollPane = new JScrollPane(list, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-            scrollerPanel.add(scrollPane, BorderLayout.CENTER);
-            scrollerPanel.revalidate();
+            problemList = new JList<>(problems);
+            problemList.setSelectedIndex(index);
+            problemList.addListSelectionListener(a -> selectProblem());
+            scrollerPanelProblems.remove(scrollPane);
+            scrollPane = new JScrollPane(problemList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+            scrollerPanelProblems.add(scrollPane, BorderLayout.CENTER);
+            scrollerPanelProblems.revalidate();
             frame.repaint();
 
         });
@@ -148,8 +154,8 @@ class QuestionViewer {
     }
 
     private static void selectProblem() {
-        if (!list.getValueIsAdjusting()) {
-            int index = list.getSelectedIndex();
+        if (!problemList.getValueIsAdjusting()) {
+            int index = problemList.getSelectedIndex();
             if (problems[index] instanceof Quadratic) {
                 questionPanel.removeAll();
                 currentProblem = new QuadraticForm((Quadratic) problems[index]);
