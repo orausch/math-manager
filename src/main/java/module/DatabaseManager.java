@@ -23,6 +23,7 @@ public class DatabaseManager {
             conn = DriverManager.getConnection("jdbc:h2:./" + this.DB_NAME + ";TRACE_LEVEL_FILE=0");
             stat = conn.createStatement();
 
+
             if (createTables) {
                 initDatabase();
             }
@@ -220,13 +221,15 @@ public class DatabaseManager {
     public Test[] getTestArray() {
         try {
             ArrayList<Test> tests = new ArrayList<>();
-            ResultSet rs = stat.executeQuery("SELECT * FROM " + DatabaseContract.Tests.TABLE_NAME);
+            //A new statement is required because JDBC auto closes the old one during the loop
+            Statement stat2 = conn.createStatement();
+            ResultSet rs = stat2.executeQuery("SELECT * FROM " + DatabaseContract.Tests.TABLE_NAME);
             while (rs.next()) {
                 LinkedList<Problem> problems = new LinkedList<>();
                 String[] string = rs.getString(DatabaseContract.Tests.COLUMN_PROBLEM_IDS).split(",");
                 String testName = rs.getString(DatabaseContract.Tests.COLUMN_NAME);
                 int id = rs.getInt(DatabaseContract.Tests.COLUMN_ID);
-                //When it gets to this loop the second time around it closes the resultset
+                //When it gets to this loop it closes the resultset
                 for (int i = 0; i < string.length; i++) {
                     problems.add(getProblem(Integer.parseInt(string[i])));
                 }

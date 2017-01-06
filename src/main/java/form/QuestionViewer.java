@@ -34,7 +34,7 @@ class QuestionViewer {
 
     private static void initUI() {
         scrollerPanelProblems = new JPanel(new BorderLayout());
-        listsPanel = new JPanel(new BorderLayout());
+        listsPanel = new JPanel(new GridLayout(1,2));
 
         DatabaseManager db = new DatabaseManager();
         problems = db.getProblemsArray();
@@ -72,7 +72,7 @@ class QuestionViewer {
         problemList.setSelectedIndex(0);
         selectProblem();
         listsPanel = new JPanel(new BorderLayout());
-        listsPanel.add(scrollerPanelProblems, BorderLayout.EAST);
+        listsPanel.add(scrollerPanelProblems);
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, listsPanel, questionPanel);
         frame.add(splitPane);
         frame.setSize(1000, 1000);
@@ -87,7 +87,7 @@ class QuestionViewer {
             if(isPanelExpanded){
                 listsPanel.remove(testList);
             }else{
-                listsPanel.add(testList, BorderLayout.WEST);
+                listsPanel.add(testList);
             }
         });
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
