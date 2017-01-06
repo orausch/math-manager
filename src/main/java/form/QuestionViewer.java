@@ -86,7 +86,7 @@ class QuestionViewer {
             problems = db.getProblemsArray();
             db.close();
             list = new JList<>(problems);
-            list.setSelectedIndex(index + 1);
+            list.setSelectedIndex(index);
             list.addListSelectionListener(a -> selectProblem());
             scrollerPanel.remove(scrollPane);
             scrollPane = new JScrollPane(list, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);

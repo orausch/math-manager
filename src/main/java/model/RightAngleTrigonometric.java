@@ -37,9 +37,10 @@ public class RightAngleTrigonometric extends Problem implements Serializable {
     private final int TOP_RIGHT = 1;
     private final int BOT_LEFT = 2;
     private final int BOT_RIGHT = 3;
-    private final int IMAGE_HEIGHT = 500;
+    private int IMAGE_HEIGHT = 500;
 
-    public BufferedImage getImage() {
+    public BufferedImage getImage(int zoomFactor) {
+        IMAGE_HEIGHT = zoomFactor;
         final int PADDING = 50;
         final int RECTANGLE_SIZE = 10;
 
@@ -47,9 +48,9 @@ public class RightAngleTrigonometric extends Problem implements Serializable {
         Graphics2D g = image.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        //DEBUGGING
-        g.setColor(Color.red);
-        g.fillRect(0, 0, IMAGE_HEIGHT + 2* PADDING, IMAGE_HEIGHT + 2 *PADDING);
+         //DEBUGGING
+//        g.setColor(Color.red);
+//        g.fillRect(0, 0, IMAGE_HEIGHT + 2* PADDING, IMAGE_HEIGHT + 2 *PADDING);
 
 
         //Randomising rotation of the triangle
