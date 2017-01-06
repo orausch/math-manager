@@ -6,46 +6,48 @@ import form.question.RightAngleTrigonometricForm;
 import form.question.TextForm;
 import jiconfont.icons.GoogleMaterialDesignIcons;
 import jiconfont.swing.IconFontSwing;
-import model.Problem;
-import model.Quadratic;
-import model.RightAngleTrigonometric;
-import model.Text;
+import model.*;
 import module.DatabaseManager;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 class QuestionViewer {
     private static Problem problem;
     private static JFrame frame;
-    private static JPanel scrollerPanel, questionPanel;
+    private static JPanel scrollerPanel, scrollerPanelTests, questionPanel;
     private static JList<Problem> list;
+    private static JList<Test> testList;
     private static Problem[] problems;
     private static AbstractProblemForm currentProblem;
-    private static JButton backButton;
+    private static JButton showTestsButton;
     private static JButton addButton;
     private static JButton deleteButton;
     private static JScrollPane scrollPane;
+    private static boolean isPanelExpanded = false;
 
     private static void initUI() {
         scrollerPanel = new JPanel(new BorderLayout());
+        scrollerPanelTests = new JPanel(new BorderLayout());
+
         DatabaseManager db = new DatabaseManager();
         problems = db.getProblemsArray();
         db.close();
 
         list = new JList<>(problems);
         scrollPane = new JScrollPane(list, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+        list = new JList<>(problems);
+        scrollPane = new JScrollPane(list, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollerPanel.add(scrollPane, BorderLayout.CENTER);
 
-        backButton = new JButton("Back");
-        backButton.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.ARROW_BACK, 20, new Color(0, 0, 0)));
-        scrollerPanel.add(backButton, BorderLayout.SOUTH);
+        showTestsButton = new JButton("Show Tests");
+        showTestsButton.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.ARROW_FORWARD, 20, new Color(0, 0, 0)));
+        scrollerPanel.add(showTestsButton, BorderLayout.SOUTH);
 
         JPanel buttonPanel = new JPanel(new GridLayout(1, 2));
         addButton = new JButton("Add");
@@ -64,7 +66,9 @@ class QuestionViewer {
         questionPanel.setBorder(BorderFactory.createCompoundBorder(inner, BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         list.setSelectedIndex(0);
         selectProblem();
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollerPanel, questionPanel);
+        scrollerPanelTests = new JPanel(new BorderLayout());
+        scrollerPanelTests.add(scrollerPanel, BorderLayout.EAST);
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollerPanelTests, questionPanel);
         frame.add(splitPane);
         frame.setSize(1000, 1000);
         frame.setResizable(true);
@@ -74,9 +78,50 @@ class QuestionViewer {
     }
 
     private static void initListeners() {
-        backButton.addActionListener(e -> {
-            Start.show();
-            frame.dispose();
+        showTestsButton.addActionListener(e -> {
+            if(isPanelExpanded){
+            }else{
+
+            }
+        });
+        frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        frame.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                e.getWindow().dispose();
+                Start.show();
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+
+            }
+
         });
        list.addListSelectionListener(e -> selectProblem());
         deleteButton.addActionListener(e -> {

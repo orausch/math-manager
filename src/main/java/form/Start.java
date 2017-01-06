@@ -60,6 +60,14 @@ public class Start {
 
         constraints.gridy = 4;
         panel.add(browseTestsButton, constraints);
+
+        browseTestsButton = new JButton("Browse Students");
+        browseTestsButton.setHorizontalAlignment(SwingConstants.LEFT);
+        browseTestsButton.setPreferredSize(buttonSize);
+        browseTestsButton.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.INSERT_DRIVE_FILE, 20, new Color(0, 169, 255)));
+
+        constraints.gridy = 5;
+        panel.add(browseTestsButton, constraints);
         frame.add(panel);
 
         frame.setSize(300, 300);

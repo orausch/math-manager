@@ -2,15 +2,13 @@ package module;
 
 import factory.QuadraticProblemFactory;
 import factory.RightAngleTrigonometricProblemFactory;
-import model.Problem;
-import model.Quadratic;
-import model.RightAngleTrigonometric;
-import model.Text;
+import model.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class DatabaseManager {
     private final String DB_NAME = "database";
@@ -35,7 +33,9 @@ public class DatabaseManager {
 
     private void initDatabase() {
         //Creating the Tables for the Database
-        System.out.println("-- STARTING TABLE CREATION --");
+        System.out.println("STARTING TABLE CREATION");
+        System.out.println("=======================");
+
         final String CREATE_PROBLEMS_TABLE = "CREATE TABLE "
                 + DatabaseContract.Problems.TABLE_NAME + " ("
                 + DatabaseContract.Problems.COLUMN_ID + " INT PRIMARY KEY AUTO_INCREMENT,"
@@ -44,14 +44,21 @@ public class DatabaseManager {
                 + DatabaseContract.Problems.COLUMN_DATA + " TEXT,"
                 + DatabaseContract.Problems.COLUMN_ANSWER + " TEXT)";
 
+        final String CREATE_TESTS_TABLE = "CREATE TABLE "
+                + DatabaseContract.Tests.TABLE_NAME + " ("
+                + DatabaseContract.Tests.COLUMN_ID + " INT PRIMARY KEY AUTO_INCREMENT,"
+                + DatabaseContract.Tests.COLUMN_NAME + " TEXT,"
+                + DatabaseContract.Tests.COLUMN_PROBLEM_IDS + " TEXT) ";
+
         try {
             stat.execute(CREATE_PROBLEMS_TABLE);
+            stat.execute(CREATE_TESTS_TABLE);
             //insert projects for debugging
-            insertProblem(QuadraticProblemFactory.generateSolveQuadraticQuestion(1,5,10));
-            insertProblem(QuadraticProblemFactory.generateSolveQuadraticQuestion(1,5,10));
-            insertProblem(QuadraticProblemFactory.generateSolveQuadraticQuestion(1,5,10));
-            insertProblem(QuadraticProblemFactory.generateSolveQuadraticQuestion(1,5,10));
-            insertProblem(QuadraticProblemFactory.generateSolveQuadraticQuestion(1,5,10));
+            insertProblem(QuadraticProblemFactory.generateSolveQuadraticQuestion(1, 5, 10));
+            insertProblem(QuadraticProblemFactory.generateSolveQuadraticQuestion(1, 5, 10));
+            insertProblem(QuadraticProblemFactory.generateSolveQuadraticQuestion(1, 5, 10));
+            insertProblem(QuadraticProblemFactory.generateSolveQuadraticQuestion(1, 5, 10));
+            insertProblem(QuadraticProblemFactory.generateSolveQuadraticQuestion(1, 5, 10));
 
             insertProblem(RightAngleTrigonometricProblemFactory.generateRightAngleTrigonometricProblem(0));
             insertProblem(RightAngleTrigonometricProblemFactory.generateRightAngleTrigonometricProblem(1));
@@ -97,6 +104,35 @@ public class DatabaseManager {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public Problem getProblem(int id) {
+        try {
+            ResultSet rs = stat.executeQuery("SELECT * FROM " + DatabaseContract.Problems.TABLE_NAME + "WHERE " + DatabaseContract.Problems.COLUMN_ID + "=" + id);
+            if (rs.getInt(DatabaseContract.Problems.COLUMN_PROBLEM_TYPE) == DatabaseContract.Problems.TYPE_QUADRATIC) {
+                Quadratic quadratic = new Quadratic(rs.getString(DatabaseContract.Problems.COLUMN_DATA),
+                        rs.getString(DatabaseContract.Problems.COLUMN_ANSWER),
+                        rs.getString(DatabaseContract.Problems.COLUMN_QUESTION));
+                quadratic.setId(rs.getInt(DatabaseContract.Problems.COLUMN_ID));
+                return quadratic;
+            } else if (rs.getInt(DatabaseContract.Problems.COLUMN_PROBLEM_TYPE) == DatabaseContract.Problems.TYPE_TRIG) {
+                try {
+                    RightAngleTrigonometric trigonometric = (RightAngleTrigonometric) RightAngleTrigonometric.parseDatabaseForm(rs.getString(DatabaseContract.Problems.COLUMN_DATA));
+                    trigonometric.setId(rs.getInt(DatabaseContract.Problems.COLUMN_ID));
+                    return trigonometric;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if (rs.getInt(DatabaseContract.Problems.COLUMN_PROBLEM_TYPE) == DatabaseContract.Problems.TYPE_TEXT) {
+                Text text = new Text(rs.getString(DatabaseContract.Problems.COLUMN_QUESTION), rs.getString(DatabaseContract.Problems.COLUMN_ANSWER));
+                text.setId(rs.getInt(DatabaseContract.Problems.COLUMN_ID));
+                return text;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new Text("Error", "Error");
     }
 
     public void insertProblem(Problem problem) {
@@ -149,6 +185,52 @@ public class DatabaseManager {
             stat.execute(statement);
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void insertTest(Test test) {
+        String ids = String.valueOf(test.getQuestions().getFirst().getId());
+
+        for (int i = 1; i < test.getQuestions().size(); i++) {
+            ids += "," + test.getQuestions().get(i).getId();
+        }
+
+        String statement = "INSERT INTO "
+                + DatabaseContract.Tests.TABLE_NAME
+                + "("
+                + DatabaseContract.Tests.COLUMN_NAME + ", "
+                + DatabaseContract.Tests.COLUMN_PROBLEM_IDS + ")"
+                + " VALUES(" + "\'" + test.getName() + "\'" + ","
+                + "\'" + ids + "\')";
+
+        try {
+            stat.execute(statement);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Test[] getTestArray() {
+        try {
+            ResultSet rs = stat.executeQuery("SELECT * FROM " + DatabaseContract.Tests.TABLE_NAME);
+            ArrayList<Test> tests = new ArrayList<>();
+            while (rs.next()) {
+                LinkedList<Problem> problems = new LinkedList<>();
+                for (String s : rs.getString(DatabaseContract.Tests.COLUMN_PROBLEM_IDS).split(",")) {
+                    problems.add(getProblem(Integer.parseInt(s)));
+                }
+                Test test = new Test(problems, rs.getString(DatabaseContract.Tests.COLUMN_NAME));
+                test.setId(rs.getInt(DatabaseContract.Problems.COLUMN_ID));
+                tests.add(test);
+            }
+            Test[] testsArray = new Test[tests.size()];
+            for (int i = 0; i < testsArray.length; i++) {
+                testsArray[i] = tests.get(i);
+            }
+            return testsArray;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 

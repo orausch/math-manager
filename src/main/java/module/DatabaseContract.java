@@ -19,4 +19,12 @@ class DatabaseContract {
         protected static final int TYPE_TEXT = 2;
 
     }
+
+    protected static abstract class Tests {
+        protected static final String TABLE_NAME = "tests";
+        protected static final String COLUMN_ID = "testid";
+        //Question IDs are separated by commas
+        protected static final String COLUMN_NAME = "name";
+        protected static final String COLUMN_PROBLEM_IDS = "problemids";
+    }
 }
