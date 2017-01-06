@@ -48,12 +48,7 @@ public class RightAngleTrigonometric extends Problem implements Serializable {
         Graphics2D g = image.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-         //DEBUGGING
-//        g.setColor(Color.red);
-//        g.fillRect(0, 0, IMAGE_HEIGHT + 2* PADDING, IMAGE_HEIGHT + 2 *PADDING);
-
-
-        //Randomising rotation of the triangle
+         //Randomising rotation of the triangle
         topLeftX = (int) (PADDING + ((IMAGE_HEIGHT - getScaledSides()[0]) / 2));
         topLeftY = PADDING;
 

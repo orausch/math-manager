@@ -11,7 +11,6 @@ import module.DatabaseManager;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -19,22 +18,24 @@ import java.awt.event.WindowListener;
 class QuestionViewer {
     private static Problem problem;
     private static JFrame frame;
-    private static JPanel scrollerPanelProblems, listsPanel, questionPanel;
+    private static JPanel listsPanel, questionPanel, rightPanel, leftPanel;
     private static JList<Problem> problemList;
     private static JList<Test> testList;
     private static Problem[] problems;
     private static Test[] tests;
 
     private static AbstractProblemForm currentProblem;
-    private static JButton showTestsButton;
     private static JButton addButton;
     private static JButton deleteButton;
-    private static JScrollPane scrollPane;
-    private static boolean isPanelExpanded = false;
+    private static JScrollPane scrollPaneProblems, scrollPaneTests;
+    private static JToolBar toolBar;
+    private static JSplitPane splitPaneLists;
+    private static JButton increaseScale;
+    private static JButton decreaseScale;
 
     private static void initUI() {
-        scrollerPanelProblems = new JPanel(new BorderLayout());
-        listsPanel = new JPanel(new GridLayout(1,2));
+        listsPanel = new JPanel();
+        listsPanel.setLayout(new GridLayout(1, 2));
 
         DatabaseManager db = new DatabaseManager();
         problems = db.getProblemsArray();
@@ -44,37 +45,46 @@ class QuestionViewer {
         problemList = new JList<>(problems);
         testList = new JList<>(tests);
 
-        scrollPane = new JScrollPane(problemList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPaneProblems = new JScrollPane(problemList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPaneTests = new JScrollPane(testList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-        problemList = new JList<>(problems);
-        scrollPane = new JScrollPane(problemList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollerPanelProblems.add(scrollPane, BorderLayout.CENTER);
 
-        showTestsButton = new JButton("Show Tests");
-        showTestsButton.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.ARROW_FORWARD, 20, new Color(0, 0, 0)));
-        scrollerPanelProblems.add(showTestsButton, BorderLayout.SOUTH);
 
-        JPanel buttonPanel = new JPanel(new GridLayout(1, 2));
-        addButton = new JButton("Add");
-        addButton.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.ADD, 20, new Color(0, 223, 37)));
-        buttonPanel.add(addButton, BorderLayout.WEST);
-
-        deleteButton = new JButton("Delete");
-        deleteButton.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.DELETE, 20, new Color(255, 0, 19)));
-        buttonPanel.add(deleteButton, BorderLayout.EAST);
-
-        scrollerPanelProblems.add(buttonPanel, BorderLayout.NORTH);
 
         frame = new JFrame("Question Viewer");
         questionPanel = new JPanel(new BorderLayout());
-        Border inner = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10), BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-        questionPanel.setBorder(BorderFactory.createCompoundBorder(inner, BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        questionPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLoweredBevelBorder(), BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         problemList.setSelectedIndex(0);
         selectProblem();
-        listsPanel = new JPanel(new BorderLayout());
-        listsPanel.add(scrollerPanelProblems);
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, listsPanel, questionPanel);
-        frame.add(splitPane);
+        splitPaneLists = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollPaneProblems, scrollPaneTests);
+
+        toolBar = new JToolBar();
+
+        toolBar.setFloatable(false);
+        addButton = new JButton("Add");
+        addButton.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.ADD, 32, new Color(0, 223, 37)));
+        deleteButton = new JButton("Delete");
+        deleteButton.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.DELETE, 32, new Color(255, 0, 19)));
+        toolBar.add(addButton);
+        toolBar.add(deleteButton);
+        increaseScale = new JButton();
+        decreaseScale = new JButton();
+        increaseScale.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.ZOOM_IN, 32, Color.BLACK));
+        decreaseScale.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.ZOOM_OUT, 32, Color.BLACK));
+        toolBar.add(increaseScale);
+        toolBar.add(decreaseScale);
+
+
+        leftPanel = new JPanel(new BorderLayout());
+        leftPanel.add(splitPaneLists, BorderLayout.CENTER);
+        rightPanel = new JPanel(new BorderLayout());
+        rightPanel.add(new JLabel("Question"), BorderLayout.NORTH);
+        rightPanel.add(questionPanel, BorderLayout.CENTER);
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, rightPanel);
+
+        frame.setLayout(new BorderLayout());
+        frame.add(toolBar, BorderLayout.PAGE_START);
+        frame.add(splitPane,BorderLayout.CENTER);
         frame.setSize(1000, 1000);
         frame.setResizable(true);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -83,13 +93,6 @@ class QuestionViewer {
     }
 
     private static void initListeners() {
-        showTestsButton.addActionListener(e -> {
-            if(isPanelExpanded){
-                listsPanel.remove(testList);
-            }else{
-                listsPanel.add(testList);
-            }
-        });
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         frame.addWindowListener(new WindowListener() {
             @Override
@@ -129,7 +132,7 @@ class QuestionViewer {
             }
 
         });
-       problemList.addListSelectionListener(e -> selectProblem());
+        problemList.addListSelectionListener(e -> selectProblem());
         deleteButton.addActionListener(e -> {
             DatabaseManager db = new DatabaseManager();
             int index = problemList.getSelectedIndex();
@@ -139,10 +142,10 @@ class QuestionViewer {
             problemList = new JList<>(problems);
             problemList.setSelectedIndex(index);
             problemList.addListSelectionListener(a -> selectProblem());
-            scrollerPanelProblems.remove(scrollPane);
-            scrollPane = new JScrollPane(problemList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-            scrollerPanelProblems.add(scrollPane, BorderLayout.CENTER);
-            scrollerPanelProblems.revalidate();
+            splitPaneLists.remove(scrollPaneProblems);
+            scrollPaneProblems = new JScrollPane(problemList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+            splitPaneLists.add(scrollPaneProblems);
+            splitPaneLists.revalidate();
             frame.repaint();
 
         });
@@ -162,6 +165,9 @@ class QuestionViewer {
             } else if (problems[index] instanceof RightAngleTrigonometric) {
                 questionPanel.removeAll();
                 currentProblem = new RightAngleTrigonometricForm(problems[index]);
+
+                increaseScale.addActionListener(e -> ((RightAngleTrigonometricForm) currentProblem).increaseScaleClicked());
+                decreaseScale.addActionListener(e -> ((RightAngleTrigonometricForm) currentProblem).decreaseScaleClicked());
             } else if (problems[index] instanceof Text) {
                 questionPanel.removeAll();
                 currentProblem = new TextForm(problems[index]);
