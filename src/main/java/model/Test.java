@@ -3,9 +3,6 @@ package model;
 import java.util.Date;
 import java.util.LinkedList;
 
-/**
- * Created by oliver on 20/10/16.
- */
 public class Test {
     private LinkedList<Problem> questions;
     private String name;

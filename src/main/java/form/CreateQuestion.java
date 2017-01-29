@@ -18,7 +18,7 @@ import java.awt.event.WindowListener;
 
 class CreateQuestion extends JFrame {
     private final String[] questionGenerateTypes = {"Quadratic", "Trigonometric"};
-    private final String[] questionCreateTypes = {"Text", "Quadratic", "Trigonometric"};
+    private final String[] questionCreateTypes = {"Text", "Quadratic"};
 
     private JPanel generateTabPanel, createTabPanel;
     private JPanel settingPanel;
@@ -32,7 +32,7 @@ class CreateQuestion extends JFrame {
         pane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.WRAP_TAB_LAYOUT);
         initGenerateUI();
         initCreateUI();
-        add(pane, BorderLayout.NORTH);
+        add(pane, BorderLayout.CENTER);
         submitButton = new JButton("Add Question");
         submitButton.addActionListener(e -> {
             if (pane.getSelectedIndex() == 0) {
@@ -119,24 +119,28 @@ class CreateQuestion extends JFrame {
     }
 
     private void initGenerateUI() {
-        generateTabPanel = new JPanel(new BorderLayout());
+        generateTabPanel = new JPanel();
+        generateTabPanel.setLayout(new BoxLayout(generateTabPanel, BoxLayout.Y_AXIS));
         comboPanelGenerate = getSelectorPanel(true);
-        generateTabPanel.add(comboPanelGenerate, BorderLayout.NORTH);
+        generateTabPanel.add(comboPanelGenerate);
 
         textpanelGenerate = new TextPanel(true, false);
-        generateTabPanel.add(textpanelGenerate, BorderLayout.CENTER);
+        generateTabPanel.add(textpanelGenerate);
         settingPanel = new QuadraticGenerateVariables();
-        generateTabPanel.add(settingPanel, BorderLayout.SOUTH);
+        generateTabPanel.add(settingPanel);
+        generateTabPanel.add(new JButton("test"));
         pane.addTab("Generate Question", generateTabPanel);
     }
 
     private void initCreateUI() {
-        createTabPanel = new JPanel(new BorderLayout());
+        createTabPanel = new JPanel();
+        createTabPanel.setLayout(new BoxLayout(createTabPanel, BoxLayout.Y_AXIS));
         comboPanelCreate = getSelectorPanel(false);
 
-        createTabPanel.add(comboPanelCreate, BorderLayout.NORTH);
+
+        createTabPanel.add(comboPanelCreate);
         textpanelCreate = new TextPanel(false, true);
-        createTabPanel.add(textpanelCreate, BorderLayout.CENTER);
+        createTabPanel.add(textpanelCreate);
         pane.addTab("Create Question", createTabPanel);
 
     }
@@ -266,7 +270,7 @@ class CreateQuestion extends JFrame {
         selectorPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10), BorderFactory.createEtchedBorder(EtchedBorder.LOWERED)));
         selectorPanel.add(new JLabel("Question type: "), BorderLayout.WEST);
         selectorPanel.add(comboBox, BorderLayout.EAST);
-        selectorPanel.setPreferredSize(new Dimension(256, 45));
+//        selectorPanel.setPreferredSize(new Dimension(256, 45));
         return selectorPanel;
     }
 }

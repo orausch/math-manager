@@ -116,27 +116,27 @@ public class DatabaseManager {
     public Problem getProblem(int id) {
         try {
             ResultSet rs = stat.executeQuery("SELECT * FROM " + DatabaseContract.Problems.TABLE_NAME + " WHERE " + DatabaseContract.Problems.COLUMN_ID + "=" + 2);
-            rs.next();
-            if (rs.getInt(DatabaseContract.Problems.COLUMN_PROBLEM_TYPE) == DatabaseContract.Problems.TYPE_QUADRATIC) {
-                Quadratic quadratic = new Quadratic(rs.getString(DatabaseContract.Problems.COLUMN_DATA),
-                        rs.getString(DatabaseContract.Problems.COLUMN_ANSWER),
-                        rs.getString(DatabaseContract.Problems.COLUMN_QUESTION));
-                quadratic.setId(rs.getInt(DatabaseContract.Problems.COLUMN_ID));
-                return quadratic;
-            } else if (rs.getInt(DatabaseContract.Problems.COLUMN_PROBLEM_TYPE) == DatabaseContract.Problems.TYPE_TRIG) {
-                try {
-                    RightAngleTrigonometric trigonometric = (RightAngleTrigonometric) RightAngleTrigonometric.parseDatabaseForm(rs.getString(DatabaseContract.Problems.COLUMN_DATA));
-                    trigonometric.setId(rs.getInt(DatabaseContract.Problems.COLUMN_ID));
-                    return trigonometric;
-                } catch (Exception e) {
-                    e.printStackTrace();
+            if(rs.next()) {
+                if (rs.getInt(DatabaseContract.Problems.COLUMN_PROBLEM_TYPE) == DatabaseContract.Problems.TYPE_QUADRATIC) {
+                    Quadratic quadratic = new Quadratic(rs.getString(DatabaseContract.Problems.COLUMN_DATA),
+                            rs.getString(DatabaseContract.Problems.COLUMN_ANSWER),
+                            rs.getString(DatabaseContract.Problems.COLUMN_QUESTION));
+                    quadratic.setId(rs.getInt(DatabaseContract.Problems.COLUMN_ID));
+                    return quadratic;
+                } else if (rs.getInt(DatabaseContract.Problems.COLUMN_PROBLEM_TYPE) == DatabaseContract.Problems.TYPE_TRIG) {
+                    try {
+                        RightAngleTrigonometric trigonometric = (RightAngleTrigonometric) RightAngleTrigonometric.parseDatabaseForm(rs.getString(DatabaseContract.Problems.COLUMN_DATA));
+                        trigonometric.setId(rs.getInt(DatabaseContract.Problems.COLUMN_ID));
+                        return trigonometric;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else if (rs.getInt(DatabaseContract.Problems.COLUMN_PROBLEM_TYPE) == DatabaseContract.Problems.TYPE_TEXT) {
+                    Text text = new Text(rs.getString(DatabaseContract.Problems.COLUMN_QUESTION), rs.getString(DatabaseContract.Problems.COLUMN_ANSWER));
+                    text.setId(rs.getInt(DatabaseContract.Problems.COLUMN_ID));
+                    return text;
                 }
-            } else if (rs.getInt(DatabaseContract.Problems.COLUMN_PROBLEM_TYPE) == DatabaseContract.Problems.TYPE_TEXT) {
-                Text text = new Text(rs.getString(DatabaseContract.Problems.COLUMN_QUESTION), rs.getString(DatabaseContract.Problems.COLUMN_ANSWER));
-                text.setId(rs.getInt(DatabaseContract.Problems.COLUMN_ID));
-                return text;
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -216,6 +216,46 @@ public class DatabaseManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void insertTest(Test test, String ids) {
+        String statement = "INSERT INTO "
+                + DatabaseContract.Tests.TABLE_NAME
+                + "("
+                + DatabaseContract.Tests.COLUMN_NAME + ", "
+                + DatabaseContract.Tests.COLUMN_PROBLEM_IDS + ")"
+                + " VALUES(" + "\'" + test.getName() + "\'" + ","
+                + "\'" + ids + "\')";
+
+        try {
+            stat.execute(statement);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void deleteTest(Test test){
+        String statement = "DELETE FROM "
+                + DatabaseContract.Tests.TABLE_NAME
+                + " WHERE " + DatabaseContract.Tests.COLUMN_ID
+                + " = \'" + String.valueOf(test.getId())
+                + "\';";
+        try {
+            stat.execute(statement);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void insertIntoTest(Problem problem, Test test) {
+        String ids = String.valueOf(test.getQuestions().getFirst().getId());
+
+        for (int i = 1; i < test.getQuestions().size(); i++) {
+            ids += "," + test.getQuestions().get(i).getId();
+        }
+
+        ids += "," + problem.getId();
+        deleteTest(test);
+        insertTest(test, ids);
     }
 
     public Test[] getTestArray() {
