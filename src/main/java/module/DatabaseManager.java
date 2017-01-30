@@ -70,7 +70,15 @@ public class DatabaseManager {
 
             LinkedList<Problem> problems = new LinkedList<>();
             problems.add(getProblem(1));
+            problems.add(getProblem(2));
+            problems.add(getProblem(3));
             insertTest(new Test(problems, "test"));
+
+            problems = new LinkedList<>();
+            problems.add(getProblem(4));
+            problems.add(getProblem(5));
+            problems.add(getProblem(6));
+            insertTest(new Test(problems, "test2"));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -258,7 +266,7 @@ public class DatabaseManager {
         insertTest(test, ids);
     }
 
-    public Test[] getTestArray() {
+    public Test[] getTestsArray() {
         try {
             ArrayList<Test> tests = new ArrayList<>();
             //A new statement is required because JDBC auto closes the old one during the loop
@@ -270,8 +278,8 @@ public class DatabaseManager {
                 String testName = rs.getString(DatabaseContract.Tests.COLUMN_NAME);
                 int id = rs.getInt(DatabaseContract.Tests.COLUMN_ID);
                 //When it gets to this loop it closes the resultset
-                for (int i = 0; i < string.length; i++) {
-                    problems.add(getProblem(Integer.parseInt(string[i])));
+                for (String aString : string) {
+                    problems.add(getProblem(Integer.parseInt(aString)));
                 }
                 Test test = new Test(problems, testName);
                 test.setId(id);

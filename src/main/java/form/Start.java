@@ -87,6 +87,10 @@ public class Start {
             frame.dispose();
             new CreateQuestion();
         });
+        browseTestsButton.addActionListener(e -> {
+            frame.dispose();
+            TestViewer.show();
+        });
     }
 
     public static void show() {

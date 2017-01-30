@@ -16,7 +16,6 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 class QuestionViewer {
-    private static Problem problem;
     private static JFrame frame;
     private static JPanel listsPanel, questionPanel, rightPanel;
     private static JList<Problem> problemList;
@@ -67,7 +66,6 @@ class QuestionViewer {
         decreaseScale.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.ZOOM_OUT, 32, Color.BLACK));
         toolBar.add(increaseScale);
         toolBar.add(decreaseScale);
-
 
         rightPanel = new JPanel(new BorderLayout());
         rightPanel.add(new JLabel("Question"), BorderLayout.NORTH);
@@ -127,9 +125,7 @@ class QuestionViewer {
         });
 
         problemList.addListSelectionListener(e -> selectProblem());
-        addButton.addActionListener(e -> {
-           new CreateQuestion();
-        });
+        addButton.addActionListener(e -> new CreateQuestion());
         deleteButton.addActionListener(e -> {
             DatabaseManager db = new DatabaseManager();
             int index = problemList.getSelectedIndex();
@@ -146,9 +142,7 @@ class QuestionViewer {
             frame.repaint();
 
         });
-        addToTestButton.addActionListener(e -> {
-            new TestOptionPane(null);
-        });
+        addToTestButton.addActionListener(e -> new TestOptionPane(null));
     }
 
     static void show() {
@@ -180,7 +174,7 @@ class QuestionViewer {
                 questionPanel.repaint();
             }
         } catch (ClassCastException e) {
-            //ignore this exception
+            //This will never be thrown
         }
     }
 }
