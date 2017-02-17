@@ -95,11 +95,6 @@ public class QuadraticGenerateVariables extends AbstractProblemVariables {
         difficultySelector.setEnabled(!enabled);
     }
 
-    private final int EASY = 0;
-    private final int MEDIUM = 1;
-    private final int HARD = 2;
-    private final int CALCULATOR = 3;
-
     private final int[][] VAL = {
             {1, 3, 5},
             {1, 5, 15},
@@ -116,8 +111,7 @@ public class QuadraticGenerateVariables extends AbstractProblemVariables {
             int difficulty = difficultySelector.getValue();
             problem = QuadraticProblemFactory.generateSolveQuadraticQuestion(VAL[difficulty][0], VAL[difficulty][1], VAL[difficulty][2]);
         }
-        problem.setQuestion(question);
-        problem.setAnswer(answer);
+        problem.setQuestion(question + "Solve for x: ");
         return problem;
     }
 

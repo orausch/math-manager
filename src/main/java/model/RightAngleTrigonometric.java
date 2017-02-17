@@ -51,7 +51,7 @@ public class RightAngleTrigonometric extends Problem implements Serializable {
             PADDING = 20;
         }
         final int RECTANGLE_SIZE = 10;
-        BufferedImage image = new BufferedImage(IMAGE_HEIGHT + PADDING * 2, (int) (getScaledSides()[1]+ PADDING * 2), BufferedImage.TYPE_INT_ARGB);
+        BufferedImage image = new BufferedImage(IMAGE_HEIGHT + PADDING * 2, (int) (getScaledSides()[1] + PADDING * 2), BufferedImage.TYPE_INT_ARGB);
 
         Graphics2D g = image.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -62,7 +62,7 @@ public class RightAngleTrigonometric extends Problem implements Serializable {
         topLeftY = PADDING;
 
         topRightX = (int) (PADDING + ((IMAGE_HEIGHT - getScaledSides()[0]) / 2) + getScaledSides()[0]);
-        topRightY = PADDING ;
+        topRightY = PADDING;
 
         botLeftX = (int) (PADDING + ((IMAGE_HEIGHT - getScaledSides()[0]) / 2));
         botLeftY = (int) (PADDING + getScaledSides()[1]);
@@ -289,18 +289,30 @@ public class RightAngleTrigonometric extends Problem implements Serializable {
         this.given = given;
         this.isTarget = isTarget;
     }
+    public RightAngleTrigonometric(char target, double answer, int unit, double[] sides, double[] angles, boolean[] isGivenSide, boolean[] isGivenAngle, int given, boolean[] isTarget) {
+        this.target = target;
+        this.answer = answer;
+        this.unit = unit;
+        this.sides = sides;
+        this.angles = angles;
+        this.isGivenAngle = isGivenAngle;
+        this.isGivenSide = isGivenSide;
+        this.given = given;
+        this.isTarget = isTarget;
+        question = "";
+    }
 
     @Override
     public String toString() {
         switch (given) {
             case 0:
-                return "Find angle given 2 sides";
+                return question + "Find angle " + target + " given 2 sides";
             case 1:
-                return "Find side given 2 sides";
+                return question + "Find side " + target + " given 2 sides";
             case 2:
-                return "Find angle given 2 angles";
+                return question + "Find angle " + target + " given 2 angles";
             case 3:
-                return "Find side given side and angle";
+                return question + "Find side " + target + " given side and angle";
         }
         return "Trigonometry";
     }

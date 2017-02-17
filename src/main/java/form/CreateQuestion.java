@@ -4,6 +4,8 @@ import form.variables.AbstractProblemVariables;
 import form.variables.QuadraticCreateVariables;
 import form.variables.QuadraticGenerateVariables;
 import form.variables.TrigonometricGenerateVariables;
+import jiconfont.icons.GoogleMaterialDesignIcons;
+import jiconfont.swing.IconFontSwing;
 import model.Problem;
 import model.Text;
 import module.DatabaseManager;
@@ -45,23 +47,47 @@ class CreateQuestion extends JFrame {
                 Problem problem;
                 if (textpanelGenerate.getGenerateValues()) {
                     problem = ((AbstractProblemVariables) settingPanel).getProblem();
+                    DatabaseManager db = new DatabaseManager();
+                    db.insertProblem(problem);
+                    db.close();
                 } else {
-                    problem = ((AbstractProblemVariables) settingPanel).getProblem(textpanelGenerate.getQuestion(), textpanelGenerate.getQuestion());
+                    if (textpanelGenerate.getQuestion().equals("")) {
+                        JOptionPane.showMessageDialog(null,
+                                "Question cannot be empty",
+                                "Error",
+                                JOptionPane.WARNING_MESSAGE, IconFontSwing.buildIcon(GoogleMaterialDesignIcons.WARNING, 32, Color.ORANGE));
+                    } else {
+                        problem = ((AbstractProblemVariables) settingPanel).getProblem(textpanelGenerate.getQuestion(), textpanelGenerate.getQuestion());
+                        DatabaseManager db = new DatabaseManager();
+                        db.insertProblem(problem);
+                        db.close();
+                    }
                 }
-                DatabaseManager db = new DatabaseManager();
-                db.insertProblem(problem);
-                db.close();
+
             } else if (pane.getSelectedIndex() == 1) {
                 DatabaseManager db = new DatabaseManager();
                 switch ((String) ((JComboBox<String>) comboPanelCreate.getComponent(1)).getSelectedItem()) {
                     case "Text":
-                        db.insertProblem(new Text(textpanelCreate.getQuestion(), textpanelCreate.getAnswer()));
+                        if (textpanelCreate.getQuestion().equals("") || textpanelCreate.getAnswer().equals("")) {
+                            JOptionPane.showMessageDialog(null,
+                                    "Fields cannot be empty",
+                                    "Error",
+                                    JOptionPane.WARNING_MESSAGE, IconFontSwing.buildIcon(GoogleMaterialDesignIcons.WARNING, 32, Color.ORANGE));
+                        } else
+                            db.insertProblem(new Text(textpanelCreate.getQuestion(), textpanelCreate.getAnswer()));
                         break;
                     case "Quadratic":
                         if (textpanelCreate.getGenerateValues()) {
-                            db.insertProblem(((AbstractProblemVariables) settingPanel).getProblem());
+                            if (((AbstractProblemVariables) settingPanel).getProblem() != null)
+                                db.insertProblem(((AbstractProblemVariables) settingPanel).getProblem());
+                        } else if (!textpanelCreate.getQuestion().equals("")) {
+                            if (((AbstractProblemVariables) settingPanel).getProblem() != null)
+                                db.insertProblem(((AbstractProblemVariables) settingPanel).getProblem(textpanelCreate.getQuestion(), textpanelCreate.getQuestion()));
                         } else {
-                            db.insertProblem(((AbstractProblemVariables) settingPanel).getProblem(textpanelCreate.getQuestion(), textpanelCreate.getQuestion()));
+                            JOptionPane.showMessageDialog(null,
+                                    "Name cannot be empty",
+                                    "Error",
+                                    JOptionPane.WARNING_MESSAGE, IconFontSwing.buildIcon(GoogleMaterialDesignIcons.WARNING, 32, Color.ORANGE));
                         }
                         break;
                     case "Trigonometric":
@@ -182,7 +208,7 @@ class CreateQuestion extends JFrame {
             generateValues = new JCheckBox();
 
             if (showGenerateCheckBox) {
-                generateLabel = new JLabel("Generate Values: ");
+                generateLabel = new JLabel("Generate Text: ");
                 generateValues.setSelected(false);
             }
             add(questionLabel);

@@ -34,8 +34,6 @@ public class DatabaseManager {
 
     private void initDatabase() {
         //Creating the Tables for the Database
-        System.out.println("STARTING TABLE CREATION");
-        System.out.println("=======================");
 
         final String CREATE_PROBLEMS_TABLE = "CREATE TABLE "
                 + DatabaseContract.Problems.TABLE_NAME + " ("
@@ -49,6 +47,7 @@ public class DatabaseManager {
                 + DatabaseContract.Tests.TABLE_NAME + " ("
                 + DatabaseContract.Tests.COLUMN_ID + " INT PRIMARY KEY AUTO_INCREMENT,"
                 + DatabaseContract.Tests.COLUMN_NAME + " TEXT,"
+                + DatabaseContract.Tests.COLUMN_DATE + " TEXT,"
                 + DatabaseContract.Tests.COLUMN_PROBLEM_IDS + " TEXT) ";
 
         try {
@@ -193,8 +192,10 @@ public class DatabaseManager {
                 + DatabaseContract.Tests.TABLE_NAME
                 + "("
                 + DatabaseContract.Tests.COLUMN_NAME + ", "
+                + DatabaseContract.Tests.COLUMN_DATE + ", "
                 + DatabaseContract.Tests.COLUMN_PROBLEM_IDS + ")"
                 + " VALUES(" + "\'" + test.getName() + "\'" + ","
+                + "\'" + test.getDate() + "\'" + ","
                 + "\'" + ids + "\')";
 
         try {
@@ -209,10 +210,11 @@ public class DatabaseManager {
                 + DatabaseContract.Tests.TABLE_NAME
                 + "("
                 + DatabaseContract.Tests.COLUMN_NAME + ", "
+                + DatabaseContract.Tests.COLUMN_DATE + ", "
                 + DatabaseContract.Tests.COLUMN_PROBLEM_IDS + ")"
                 + " VALUES(" + "\'" + test.getName() + "\'" + ","
+                + "\'" + test.getDate() + "\'" + ","
                 + "\'" + ids + "\')";
-
         try {
             stat.execute(statement);
         } catch (SQLException e) {
@@ -243,7 +245,7 @@ public class DatabaseManager {
             }
             ids += "," + problem.getId();
 
-        }else ids += problem.getId();
+        } else ids += problem.getId();
         deleteTest(test);
         insertTest(test, ids);
     }
@@ -257,6 +259,8 @@ public class DatabaseManager {
             while (rs.next()) {
                 LinkedList<Problem> problems = new LinkedList<>();
                 String testName = rs.getString(DatabaseContract.Tests.COLUMN_NAME);
+                String testDate = rs.getString(DatabaseContract.Tests.COLUMN_DATE);
+
                 int id = rs.getInt(DatabaseContract.Tests.COLUMN_ID);
                 String[] ids = rs.getString(DatabaseContract.Tests.COLUMN_PROBLEM_IDS).split(",");
                 if (!ids[0].equals("")) {
@@ -264,7 +268,7 @@ public class DatabaseManager {
                         problems.add(getProblem(Integer.parseInt(s)));
                     }
                 }
-                Test test = new Test(problems, testName);
+                Test test = new Test(problems, testName, testDate);
                 test.setId(id);
                 tests.add(test);
             }

@@ -6,7 +6,7 @@ import module.Util;
 public class QuadraticProblemFactory {
     public static Quadratic generateSolveQuadraticQuestion(int rangeA, int rangeB, int rangeX) {
         Quadratic question = generateQuadratic(rangeA, rangeB, rangeX);
-        question.setQuestion("Solve for x: " + question);
+        question.setQuestion("Solve for x: ");
         question.setAnswer((String.valueOf(question.getSolution()[0]) + "," + String.valueOf(question.getSolution()[1])).replaceAll("\\.0", ""));
         return question;
     }
@@ -17,7 +17,7 @@ public class QuadraticProblemFactory {
         double x1 = Util.getRandomNumber(-rangeX, rangeX);
         double a = Util.getRandomNumber(-rangeA, rangeA);
         while (a == 0) {
-            a = Util.getRandomNumber(-2, 2);
+            a = Util.getRandomNumber(-rangeA, rangeA);
         }
         double c = -x1 * (a * x1 + b);
         return new Quadratic(a, b, c);

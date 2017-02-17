@@ -23,7 +23,7 @@ public class RightAngleTrigonometricForm extends AbstractProblemForm {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         question = (RightAngleTrigonometric) problem;
 
-        questionLabel = new JLabel(problem.getQuestion());
+        questionLabel = new JLabel(problem.toString());
         questionLabel.setFont(new Font(questionLabel.getFont().getName(), Font.BOLD, 20));
         questionLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 

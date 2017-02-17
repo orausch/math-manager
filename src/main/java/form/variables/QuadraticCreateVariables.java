@@ -27,7 +27,6 @@ public class QuadraticCreateVariables extends AbstractProblemVariables {
         spinners.add(bSpinner);
         spinners.add(new JLabel("C: "));
         spinners.add(cSpinner);
-//        spinners.setPreferredSize(new Dimension(256, 50));
         spinners.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10), BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED), "Coefficients")));
         add(spinners);
 
@@ -50,7 +49,10 @@ public class QuadraticCreateVariables extends AbstractProblemVariables {
                 x1.setText(String.valueOf(solution1));
                 x2.setText(String.valueOf(solution2));
             } else {
-                JOptionPane.showMessageDialog(null, "No real solutions", "Error", JOptionPane.WARNING_MESSAGE, IconFontSwing.buildIcon(GoogleMaterialDesignIcons.ERROR_OUTLINE, 32, new Color(255, 0, 19)));
+                JOptionPane.showMessageDialog(null,
+                        "No real roots",
+                        "Error",
+                        JOptionPane.WARNING_MESSAGE, IconFontSwing.buildIcon(GoogleMaterialDesignIcons.WARNING, 32, Color.ORANGE));
             }
         });
         solutions.add(getSolutionsButton);
@@ -61,11 +63,33 @@ public class QuadraticCreateVariables extends AbstractProblemVariables {
 
     @Override
     public Problem getProblem(String question, String answer) {
-        return new Quadratic((int) aSpinner.getValue(), (int) bSpinner.getValue(), (int) cSpinner.getValue(), question);
+        Quadratic quadratic = new Quadratic((int) aSpinner.getValue(), (int) bSpinner.getValue(), (int) cSpinner.getValue());
+        double solution1 = quadratic.getSolution()[0];
+        double solution2 = quadratic.getSolution()[1];
+        if (!Double.isNaN(solution1) && !Double.isNaN(solution2)) {
+            return new Quadratic((int) aSpinner.getValue(), (int) bSpinner.getValue(), (int) cSpinner.getValue(), question + "Solve for x: ");
+        } else {
+            JOptionPane.showMessageDialog(null,
+                    "No real roots",
+                    "Error",
+                    JOptionPane.WARNING_MESSAGE, IconFontSwing.buildIcon(GoogleMaterialDesignIcons.WARNING, 32, Color.ORANGE));
+            return null;
+        }
     }
 
     @Override
     public Problem getProblem() {
-        return new Quadratic((int) aSpinner.getValue(), (int) bSpinner.getValue(), (int) cSpinner.getValue());
+        Quadratic quadratic = new Quadratic((int) aSpinner.getValue(), (int) bSpinner.getValue(), (int) cSpinner.getValue());
+        double solution1 = quadratic.getSolution()[0];
+        double solution2 = quadratic.getSolution()[1];
+        if (!Double.isNaN(solution1) && !Double.isNaN(solution2)) {
+            return new Quadratic((int) aSpinner.getValue(), (int) bSpinner.getValue(), (int) cSpinner.getValue());
+        } else {
+            JOptionPane.showMessageDialog(null,
+                    "No real roots",
+                    "Error",
+                    JOptionPane.WARNING_MESSAGE, IconFontSwing.buildIcon(GoogleMaterialDesignIcons.WARNING, 32, Color.ORANGE));
+            return null;
+        }
     }
 }

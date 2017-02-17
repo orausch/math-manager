@@ -2,9 +2,6 @@ package module;
 
 class DatabaseContract {
 
-    private DatabaseContract() {
-    }
-
     protected static abstract class Problems {
         protected static final String TABLE_NAME = "problems";
         protected static final String COLUMN_ID = "problemid";
@@ -25,6 +22,7 @@ class DatabaseContract {
         protected static final String COLUMN_ID = "testid";
         //Question IDs are separated by commas
         protected static final String COLUMN_NAME = "name";
+        protected static final String COLUMN_DATE = "date";
         protected static final String COLUMN_PROBLEM_IDS = "problemids";
     }
 }

@@ -252,7 +252,7 @@ class TestViewer {
                 drawCenteredString(g, test.getName(), new Rectangle(0, 0, 600, 50), TITLE);
                 currentY += 50;
                 if (test.getDate() != null) {
-                    drawCenteredString(g, "Date: " + test.getDate() + " Name:_______________", new Rectangle(0, -10, 600, 120), ANSWER);
+                    drawCenteredString(g, " Name:_______________  " + "Date: " + test.getDate(), new Rectangle(0, -10, 600, 120), ANSWER);
                 } else {
                     drawCenteredString(g, " Name:_______________", new Rectangle(0, -10, 600, 120), ANSWER);
                 }

@@ -17,7 +17,9 @@ public class RightAngleTrigonometricProblemFactory {
 
     public static RightAngleTrigonometric generateRightAngleTrigonometricProblem(int given, String question) {
         RightAngleTrigonometric problem = generateProblem(given);
-        problem.setQuestion(question);
+        if (problem != null) {
+            problem.setQuestion(question);
+        }
         return problem;
     }
     private static RightAngleTrigonometric generateProblem(int given){
@@ -39,7 +41,7 @@ public class RightAngleTrigonometricProblemFactory {
             case TRIG_FIND_ANGLE_GIVEN_2_ANGLES: {
                 isGivenAngle[0] = true;
                 isTarget[4] = true;
-                return new RightAngleTrigonometric("Find the angle " + possibleTargetAngles[targetIndex], possibleTargetAngles[targetIndex], angles[1], unit, sides, angles, isGivenSide, isGivenAngle, given, isTarget);
+                return new RightAngleTrigonometric(possibleTargetAngles[targetIndex], angles[1], unit, sides, angles, isGivenSide, isGivenAngle, given, isTarget);
             }
             case TRIG_FIND_ANGLE_GIVEN_2_SIDES: {
                 int first = (int) Util.getRandomNumber(0, 2);
@@ -52,7 +54,7 @@ public class RightAngleTrigonometricProblemFactory {
                 int target = (int) Util.getRandomNumber(3, 4);
                 isTarget[target] = true;
 
-                return new RightAngleTrigonometric("Find the angle " + possibleTargetAngles[targetIndex], possibleTargetAngles[targetIndex], angles[target - 3], unit, sides, angles, isGivenSide, isGivenAngle, given, isTarget);
+                return new RightAngleTrigonometric(possibleTargetAngles[targetIndex], angles[target - 3], unit, sides, angles, isGivenSide, isGivenAngle, given, isTarget);
             }
             case TRIG_FIND_SIDE_GIVEN_2_SIDES: {
                 int first = (int) Util.getRandomNumber(0, 2);
@@ -64,7 +66,7 @@ public class RightAngleTrigonometricProblemFactory {
                 isGivenSide[first] = true;
                 isGivenSide[second] = true;
                 isTarget[third] = true;
-                return new RightAngleTrigonometric("Find the side " + possibleTargetSides[targetIndex], possibleTargetSides[targetIndex], sides[third], unit, sides, angles, isGivenSide, isGivenAngle, given, isTarget);
+                return new RightAngleTrigonometric(possibleTargetSides[targetIndex], sides[third], unit, sides, angles, isGivenSide, isGivenAngle, given, isTarget);
             }
             case TRIG_FIND_SIDE_GIVEN_SIDE_AND_ANGLE: {
                 int givenside = (int) Util.getRandomNumber(0, 2);
@@ -77,9 +79,10 @@ public class RightAngleTrigonometricProblemFactory {
                 }
                 isTarget[target] = true;
 
-                return new RightAngleTrigonometric("Find the side " + possibleTargetSides[targetIndex], possibleTargetSides[targetIndex], sides[target], unit, sides, angles, isGivenSide, isGivenAngle, given, isTarget);
+                return new RightAngleTrigonometric(possibleTargetSides[targetIndex], sides[target], unit, sides, angles, isGivenSide, isGivenAngle, given, isTarget);
             }
         }
         return null;
     }
+
 }

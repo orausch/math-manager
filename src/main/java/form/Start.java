@@ -1,5 +1,6 @@
 package form;
 
+import jdk.nashorn.internal.scripts.JO;
 import jiconfont.icons.GoogleMaterialDesignIcons;
 import jiconfont.swing.IconFontSwing;
 import model.Test;
@@ -40,7 +41,7 @@ public class Start {
         panel.add(versionLabel, constraints);
 
         Dimension buttonSize = new Dimension(230, 30);
-        generateButton = new JButton("Generate a new Problem");
+        generateButton = new JButton("New Question");
         generateButton.setHorizontalAlignment(SwingConstants.LEFT);
         generateButton.setPreferredSize(buttonSize);
         generateButton.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.ADD, 20, new Color(0, 150, 0)));
@@ -48,7 +49,7 @@ public class Start {
         constraints.insets = new Insets(1, 5, 5, 1);
         panel.add(generateButton, constraints);
 
-        browseProblemsButton = new JButton("Browse Problems");
+        browseProblemsButton = new JButton("Browse Questions");
         browseProblemsButton.setHorizontalAlignment(SwingConstants.LEFT);
         browseProblemsButton.setPreferredSize(buttonSize);
         browseProblemsButton.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.FOLDER_OPEN, 20, new Color(179, 138, 47)));
@@ -100,14 +101,21 @@ public class Start {
             JTextField dateField = new JTextField();
             Object[] message = {
                     "Name:", nameField,
-                    "Date:", dateField
+                    "Date (Optional):", dateField
             };
 
             int option = JOptionPane.showConfirmDialog(null, message, "New Test", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon());
-            if (option == JOptionPane.OK_OPTION) {
+            if (option == JOptionPane.OK_OPTION && !nameField.getText().equals("")) {
                 DatabaseManager db = new DatabaseManager();
                 db.insertTest(new Test(nameField.getText(), dateField.getText()));
                 db.close();
+            }else{
+                if(option != JOptionPane.CLOSED_OPTION) {
+                    JOptionPane.showMessageDialog(null,
+                            "Name cannot be empty",
+                            "Error",
+                            JOptionPane.WARNING_MESSAGE, IconFontSwing.buildIcon(GoogleMaterialDesignIcons.WARNING, 32, Color.ORANGE));
+                }
             }
         });
     }

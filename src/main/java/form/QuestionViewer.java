@@ -114,7 +114,6 @@ class QuestionViewer {
             public void windowActivated(WindowEvent e) {
 
             }
-
             @Override
             public void windowDeactivated(WindowEvent e) {
 
@@ -124,22 +123,40 @@ class QuestionViewer {
 
         problemList.addListSelectionListener(e -> selectProblem());
         deleteButton.addActionListener(e -> {
-            DatabaseManager db = new DatabaseManager();
-            int index = problemList.getSelectedIndex();
-            db.deleteProblem(problems[index]);
-            problems = db.getProblemsArray();
-            db.close();
-            problemList = new JList<>(problems);
-            problemList.setSelectedIndex(index);
-            problemList.addListSelectionListener(a -> selectProblem());
-            splitPane.remove(scrollPaneProblems);
-            scrollPaneProblems = new JScrollPane(problemList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-            splitPane.add(scrollPaneProblems);
-            splitPane.revalidate();
-            frame.repaint();
+            if (!problemList.isSelectionEmpty()) {
+                DatabaseManager db = new DatabaseManager();
+                int index = problemList.getSelectedIndex();
+                db.deleteProblem(problems[index]);
+                problems = db.getProblemsArray();
+                db.close();
+                problemList = new JList<>(problems);
+                problemList.setSelectedIndex(index);
+                problemList.addListSelectionListener(a -> selectProblem());
+                splitPane.remove(scrollPaneProblems);
+                scrollPaneProblems = new JScrollPane(problemList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+                splitPane.add(scrollPaneProblems);
+                splitPane.revalidate();
+                frame.repaint();
+            } else {
+                JOptionPane.showMessageDialog(frame,
+                        "Please select a Question",
+                        "Error",
+                        JOptionPane.WARNING_MESSAGE, IconFontSwing.buildIcon(GoogleMaterialDesignIcons.WARNING, 32, Color.ORANGE));
+            }
+
 
         });
-        addToTestButton.addActionListener(e -> new TestOptionPane(problemList.getSelectedValue()));
+        addToTestButton.addActionListener(e -> {
+            if (!problemList.isSelectionEmpty()) {
+                new TestOptionPane(problemList.getSelectedValue());
+            } else {
+                JOptionPane.showMessageDialog(frame,
+                        "Please select a Question",
+                        "Error",
+                        JOptionPane.WARNING_MESSAGE, IconFontSwing.buildIcon(GoogleMaterialDesignIcons.WARNING, 32, Color.ORANGE));
+            }
+
+        });
     }
 
     static void show() {
@@ -148,7 +165,6 @@ class QuestionViewer {
     }
 
     private static void selectProblem() {
-
         if (!problemList.getValueIsAdjusting() && !problemList.isSelectionEmpty()) {
             int index = problemList.getSelectedIndex();
             if (problems[index] instanceof Quadratic) {
@@ -160,8 +176,7 @@ class QuestionViewer {
                 try {
                     increaseScale.addActionListener(e -> ((RightAngleTrigonometricForm) currentProblem).increaseScaleClicked());
                     decreaseScale.addActionListener(e -> ((RightAngleTrigonometricForm) currentProblem).decreaseScaleClicked());
-                } catch (Exception e) {
-                    System.out.println("click");
+                } catch (Exception ignored) {
                 }
             } else if (problems[index] instanceof Text) {
                 questionPanel.removeAll();

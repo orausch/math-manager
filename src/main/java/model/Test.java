@@ -25,9 +25,10 @@ public class Test {
         this.id = id;
     }
 
-    public Test(LinkedList<Problem> questions, String name) {
+    public Test(LinkedList<Problem> questions, String name, String date) {
         this.questions = questions;
         this.name = name;
+        this.date = date;
     }
 
     public Test(String name, String date) {

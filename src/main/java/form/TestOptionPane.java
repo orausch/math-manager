@@ -1,6 +1,8 @@
 package form;
 
 import com.sun.org.apache.xpath.internal.SourceTree;
+import jiconfont.icons.GoogleMaterialDesignIcons;
+import jiconfont.swing.IconFontSwing;
 import model.Problem;
 import model.Test;
 import module.DatabaseManager;
@@ -34,10 +36,19 @@ class TestOptionPane extends JFrame {
 
         addButton.addActionListener(e -> {
             DatabaseManager db1 = new DatabaseManager();
-            if(!testList.isSelectionEmpty())
+            if(!testList.isSelectionEmpty()) {
                 db1.insertIntoTest(currentProblem, testList.getSelectedValue());
-            db1.close();
-            dispose();
+                db1.close();
+                dispose();
+            }else{
+                JOptionPane.showMessageDialog(null,
+                        "Please select a Test",
+                        "Error",
+                        JOptionPane.WARNING_MESSAGE, IconFontSwing.buildIcon(GoogleMaterialDesignIcons.WARNING, 32, Color.ORANGE));
+            }
+
+
+
         });
         cancelButton.addActionListener(e -> dispose());
 

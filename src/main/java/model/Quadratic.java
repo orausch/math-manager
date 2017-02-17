@@ -36,7 +36,7 @@ public class Quadratic extends Problem {
         this.b = parseDatabaseForm(databaseForm)[1];
         this.c = parseDatabaseForm(databaseForm)[2];
         this.answer = answer;
-        this.question = question;
+        setQuestion(question + getStringForm());
     }
 
     private String question;
@@ -45,7 +45,7 @@ public class Quadratic extends Problem {
         this.a = a;
         this.b = b;
         this.c = c;
-        setQuestion("Solve for x: " + toString());
+        setQuestion("Solve for x: ");
         setAnswer((String.valueOf(getSolution()[0]) + "," + String.valueOf(getSolution()[1])).replaceAll("\\.0", ""));
     }
 
@@ -66,8 +66,8 @@ public class Quadratic extends Problem {
         return solutions;
     }
 
-    @Override
-    public String toString() {
+
+    private String getStringForm() {
         String a = String.valueOf(this.a);
         if (this.a == 1) {
             a = "";
@@ -94,21 +94,13 @@ public class Quadratic extends Problem {
         if (this.c != 0) {
             sb.append(addSign(c, false));
         }
+
         return Util.superscript(sb.toString().replaceAll("\\.0", ""));
     }
 
-    public String toFactorisedForm() {
-        double x1 = getSolution()[0];
-        double x2 = getSolution()[1];
-        if (x1 != 0.0 && x2 != 0.0) {
-            return ("(x" + addSign(x1, true) + ")(x" + addSign(x2, true) + ")").replaceAll("\\.0", "");
-        } else if (x1 == 0.0) {
-            return "x(x" + addSign(x2, true) + ")";
-        } else if (x2 == 0.0) {
-            return "x(x" + addSign(x1, true) + ")";
-        }
-        System.err.println("Equation is equal 0: " + toString());
-        return null;
+    @Override
+    public String toString(){
+        return question;
     }
 
     private String addSign(double d, boolean reverseSign) {

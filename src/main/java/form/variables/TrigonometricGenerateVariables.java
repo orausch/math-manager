@@ -26,6 +26,7 @@ public class TrigonometricGenerateVariables extends AbstractProblemVariables {
         group.add(findSide);
         findAngle.addActionListener(e -> comboBox.setModel(new DefaultComboBoxModel(questionTypesLabelsAngle)));
         findSide.addActionListener(e -> comboBox.setModel(new DefaultComboBoxModel(questionTypesLabelsSide)));
+        findAngle.setSelected(true);
         JPanel panel = new JPanel();
         panel.add(findAngle);
         panel.add(findSide);
@@ -53,6 +54,7 @@ public class TrigonometricGenerateVariables extends AbstractProblemVariables {
             if (comboBox.getSelectedIndex() == 0) given = 0;
             if (comboBox.getSelectedIndex() == 1) given = 2;
         }
+        System.out.println(answer);
         return RightAngleTrigonometricProblemFactory.generateRightAngleTrigonometricProblem(given, answer);
 
     }
