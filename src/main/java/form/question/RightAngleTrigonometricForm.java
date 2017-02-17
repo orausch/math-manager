@@ -28,7 +28,7 @@ public class RightAngleTrigonometricForm extends AbstractProblemForm {
         questionLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
         imageLabel = new JLabel();
-        imageLabel.setIcon(new ImageIcon(question.getImage(zoomFactor)));
+        imageLabel.setIcon(new ImageIcon(question.getImage(zoomFactor, true)));
 
         questionLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(questionLabel);
@@ -41,13 +41,13 @@ public class RightAngleTrigonometricForm extends AbstractProblemForm {
 
     public void increaseScaleClicked() {
         zoomFactor += 50;
-        imageLabel.setIcon(new ImageIcon(question.getImage(zoomFactor)));
+        imageLabel.setIcon(new ImageIcon(question.getImage(zoomFactor, true)));
 
     }
 
     public void decreaseScaleClicked() {
         zoomFactor -= 50;
-        imageLabel.setIcon(new ImageIcon(question.getImage(zoomFactor)));
+        imageLabel.setIcon(new ImageIcon(question.getImage(zoomFactor, true)));
 
     }
 }

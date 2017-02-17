@@ -54,31 +54,6 @@ public class DatabaseManager {
         try {
             stat.execute(CREATE_PROBLEMS_TABLE);
             stat.execute(CREATE_TESTS_TABLE);
-
-            //insert data for debugging
-            Quadratic quadratic = QuadraticProblemFactory.generateSolveQuadraticQuestion(1, 5, 10);
-            insertProblem(quadratic);
-            insertProblem(QuadraticProblemFactory.generateSolveQuadraticQuestion(1, 5, 10));
-            insertProblem(QuadraticProblemFactory.generateSolveQuadraticQuestion(1, 5, 10));
-            insertProblem(QuadraticProblemFactory.generateSolveQuadraticQuestion(1, 5, 10));
-            insertProblem(QuadraticProblemFactory.generateSolveQuadraticQuestion(1, 5, 10));
-
-            insertProblem(RightAngleTrigonometricProblemFactory.generateRightAngleTrigonometricProblem(0));
-            insertProblem(RightAngleTrigonometricProblemFactory.generateRightAngleTrigonometricProblem(1));
-            insertProblem(RightAngleTrigonometricProblemFactory.generateRightAngleTrigonometricProblem(2));
-            insertProblem(RightAngleTrigonometricProblemFactory.generateRightAngleTrigonometricProblem(3));
-
-            LinkedList<Problem> problems = new LinkedList<>();
-            problems.add(getProblem(1));
-            problems.add(getProblem(2));
-            problems.add(getProblem(3));
-            insertTest(new Test(problems, "test"));
-
-            problems = new LinkedList<>();
-            problems.add(getProblem(4));
-            problems.add(getProblem(5));
-            problems.add(getProblem(6));
-            insertTest(new Test(problems, "test2"));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -121,10 +96,10 @@ public class DatabaseManager {
         }
     }
 
-    public Problem getProblem(int id) {
+    private Problem getProblem(int id) {
         try {
-            ResultSet rs = stat.executeQuery("SELECT * FROM " + DatabaseContract.Problems.TABLE_NAME + " WHERE " + DatabaseContract.Problems.COLUMN_ID + "=" + 2);
-            if(rs.next()) {
+            ResultSet rs = stat.executeQuery("SELECT * FROM " + DatabaseContract.Problems.TABLE_NAME + " WHERE " + DatabaseContract.Problems.COLUMN_ID + "=" + id);
+            if (rs.next()) {
                 if (rs.getInt(DatabaseContract.Problems.COLUMN_PROBLEM_TYPE) == DatabaseContract.Problems.TYPE_QUADRATIC) {
                     Quadratic quadratic = new Quadratic(rs.getString(DatabaseContract.Problems.COLUMN_DATA),
                             rs.getString(DatabaseContract.Problems.COLUMN_ANSWER),
@@ -205,10 +180,13 @@ public class DatabaseManager {
     }
 
     public void insertTest(Test test) {
-        String ids = String.valueOf(test.getQuestions().getFirst().getId());
+        String ids = "";
+        if (!test.getQuestions().isEmpty()) {
+            ids = String.valueOf(test.getQuestions().getFirst().getId());
 
-        for (int i = 1; i < test.getQuestions().size(); i++) {
-            ids += "," + test.getQuestions().get(i).getId();
+            for (int i = 1; i < test.getQuestions().size(); i++) {
+                ids += "," + test.getQuestions().get(i).getId();
+            }
         }
 
         String statement = "INSERT INTO "
@@ -226,7 +204,7 @@ public class DatabaseManager {
         }
     }
 
-    public void insertTest(Test test, String ids) {
+    private void insertTest(Test test, String ids) {
         String statement = "INSERT INTO "
                 + DatabaseContract.Tests.TABLE_NAME
                 + "("
@@ -241,7 +219,8 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
-    public void deleteTest(Test test){
+
+    public void deleteTest(Test test) {
         String statement = "DELETE FROM "
                 + DatabaseContract.Tests.TABLE_NAME
                 + " WHERE " + DatabaseContract.Tests.COLUMN_ID
@@ -255,13 +234,16 @@ public class DatabaseManager {
     }
 
     public void insertIntoTest(Problem problem, Test test) {
-        String ids = String.valueOf(test.getQuestions().getFirst().getId());
+        String ids = "";
+        if (!test.getQuestions().isEmpty()) {
+            ids = String.valueOf(test.getQuestions().getFirst().getId());
 
-        for (int i = 1; i < test.getQuestions().size(); i++) {
-            ids += "," + test.getQuestions().get(i).getId();
-        }
+            for (int i = 1; i < test.getQuestions().size(); i++) {
+                ids += "," + test.getQuestions().get(i).getId();
+            }
+            ids += "," + problem.getId();
 
-        ids += "," + problem.getId();
+        }else ids += problem.getId();
         deleteTest(test);
         insertTest(test, ids);
     }
@@ -274,12 +256,13 @@ public class DatabaseManager {
             ResultSet rs = stat2.executeQuery("SELECT * FROM " + DatabaseContract.Tests.TABLE_NAME);
             while (rs.next()) {
                 LinkedList<Problem> problems = new LinkedList<>();
-                String[] string = rs.getString(DatabaseContract.Tests.COLUMN_PROBLEM_IDS).split(",");
                 String testName = rs.getString(DatabaseContract.Tests.COLUMN_NAME);
                 int id = rs.getInt(DatabaseContract.Tests.COLUMN_ID);
-                //When it gets to this loop it closes the resultset
-                for (String aString : string) {
-                    problems.add(getProblem(Integer.parseInt(aString)));
+                String[] ids = rs.getString(DatabaseContract.Tests.COLUMN_PROBLEM_IDS).split(",");
+                if (!ids[0].equals("")) {
+                    for (String s : ids) {
+                        problems.add(getProblem(Integer.parseInt(s)));
+                    }
                 }
                 Test test = new Test(problems, testName);
                 test.setId(id);

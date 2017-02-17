@@ -11,4 +11,8 @@ public abstract class AbstractProblemForm extends JPanel {
     AbstractProblemForm(Problem problem) {
         this.problem = problem;
     }
+
+    public Problem getProblem() {
+        return problem;
+    }
 }

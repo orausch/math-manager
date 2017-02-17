@@ -1,5 +1,6 @@
 package form;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
 import form.question.AbstractProblemForm;
 import form.question.QuadraticForm;
 import form.question.RightAngleTrigonometricForm;
@@ -24,7 +25,7 @@ class QuestionViewer {
     private static AbstractProblemForm currentProblem;
     private static JScrollPane scrollPaneProblems;
     private static JToolBar toolBar;
-    private static JButton addToTestButton, addButton, deleteButton, increaseScale, decreaseScale;
+    private static JButton addToTestButton, deleteButton, increaseScale, decreaseScale;
     private static JSplitPane splitPane;
 
     private static void initUI() {
@@ -49,21 +50,18 @@ class QuestionViewer {
         toolBar = new JToolBar();
 
         toolBar.setFloatable(false);
-        addButton = new JButton("Add Question");
-        addButton.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.ADD, 32, new Color(0, 223, 37)));
         deleteButton = new JButton("Delete");
-        deleteButton.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.DELETE, 32, new Color(255, 0, 19)));
+        deleteButton.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.DELETE, 16, Color.BLACK));
 
         addToTestButton = new JButton("Add to Test");
-        addToTestButton.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.ATTACH_FILE, 32, new Color(255, 0, 19)));
+        addToTestButton.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.ATTACH_FILE, 16, Color.BLACK));
 
         toolBar.add(addToTestButton);
-        toolBar.add(addButton);
         toolBar.add(deleteButton);
         increaseScale = new JButton();
         decreaseScale = new JButton();
-        increaseScale.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.ZOOM_IN, 32, Color.BLACK));
-        decreaseScale.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.ZOOM_OUT, 32, Color.BLACK));
+        increaseScale.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.ZOOM_IN, 16, Color.BLACK));
+        decreaseScale.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.ZOOM_OUT, 16, Color.BLACK));
         toolBar.add(increaseScale);
         toolBar.add(decreaseScale);
 
@@ -125,7 +123,6 @@ class QuestionViewer {
         });
 
         problemList.addListSelectionListener(e -> selectProblem());
-        addButton.addActionListener(e -> new CreateQuestion());
         deleteButton.addActionListener(e -> {
             DatabaseManager db = new DatabaseManager();
             int index = problemList.getSelectedIndex();
@@ -142,7 +139,7 @@ class QuestionViewer {
             frame.repaint();
 
         });
-        addToTestButton.addActionListener(e -> new TestOptionPane(null));
+        addToTestButton.addActionListener(e -> new TestOptionPane(problemList.getSelectedValue()));
     }
 
     static void show() {
@@ -151,30 +148,31 @@ class QuestionViewer {
     }
 
     private static void selectProblem() {
-        try {
-            if (!problemList.getValueIsAdjusting()) {
-                int index = problemList.getSelectedIndex();
-                if (problems[index] instanceof Quadratic) {
-                    questionPanel.removeAll();
-                    currentProblem = new QuadraticForm((Quadratic) problems[index]);
-                } else if (problems[index] instanceof RightAngleTrigonometric) {
-                    questionPanel.removeAll();
-                    currentProblem = new RightAngleTrigonometricForm(problems[index]);
 
+        if (!problemList.getValueIsAdjusting() && !problemList.isSelectionEmpty()) {
+            int index = problemList.getSelectedIndex();
+            if (problems[index] instanceof Quadratic) {
+                questionPanel.removeAll();
+                currentProblem = new QuadraticForm((Quadratic) problems[index]);
+            } else if (problems[index] instanceof RightAngleTrigonometric) {
+                questionPanel.removeAll();
+                currentProblem = new RightAngleTrigonometricForm(problems[index]);
+                try {
                     increaseScale.addActionListener(e -> ((RightAngleTrigonometricForm) currentProblem).increaseScaleClicked());
                     decreaseScale.addActionListener(e -> ((RightAngleTrigonometricForm) currentProblem).decreaseScaleClicked());
-                } else if (problems[index] instanceof Text) {
-                    questionPanel.removeAll();
-                    currentProblem = new TextForm(problems[index]);
+                } catch (Exception e) {
+                    System.out.println("click");
                 }
-                questionPanel.add(currentProblem, BorderLayout.NORTH);
-                questionPanel.add(new AnswerForm(problems[index]), BorderLayout.SOUTH);
-
-                questionPanel.revalidate();
-                questionPanel.repaint();
+            } else if (problems[index] instanceof Text) {
+                questionPanel.removeAll();
+                currentProblem = new TextForm(problems[index]);
             }
-        } catch (ClassCastException e) {
-            //This will never be thrown
+            questionPanel.add(currentProblem, BorderLayout.NORTH);
+            questionPanel.add(new AnswerForm(problems[index]), BorderLayout.SOUTH);
+
+            questionPanel.revalidate();
+            questionPanel.repaint();
         }
     }
 }
+

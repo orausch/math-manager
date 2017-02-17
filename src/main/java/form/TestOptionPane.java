@@ -1,14 +1,17 @@
 package form;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
 import model.Problem;
 import model.Test;
 import module.DatabaseManager;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 class TestOptionPane extends JFrame {
-    TestOptionPane(Problem selectedProblem) {
+    TestOptionPane(Problem currentProblem) {
+
         DatabaseManager db = new DatabaseManager();
         Test[] tests = db.getTestsArray();
         JList<Test> testList = new JList<>(tests);
@@ -19,6 +22,7 @@ class TestOptionPane extends JFrame {
 
         JPanel contentPane = new JPanel(new BorderLayout());
         setContentPane(contentPane);
+        contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
         contentPane.add(testScroller, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -30,7 +34,8 @@ class TestOptionPane extends JFrame {
 
         addButton.addActionListener(e -> {
             DatabaseManager db1 = new DatabaseManager();
-            db1.insertIntoTest(selectedProblem, testList.getSelectedValue());
+            if(!testList.isSelectionEmpty())
+                db1.insertIntoTest(currentProblem, testList.getSelectedValue());
             db1.close();
             dispose();
         });

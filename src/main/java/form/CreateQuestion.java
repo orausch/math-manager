@@ -9,7 +9,10 @@ import model.Text;
 import module.DatabaseManager;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
@@ -27,12 +30,15 @@ class CreateQuestion extends JFrame {
     private TextPanel textpanelGenerate, textpanelCreate;
     private JPanel comboPanelGenerate, comboPanelCreate;
 
-    CreateQuestion() {
-        setLayout(new BorderLayout());
+    CreateQuestion(boolean backToHome) {
+        JPanel contentPane = new JPanel();
+        contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
+
+        contentPane.setLayout(new BorderLayout());
         pane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.WRAP_TAB_LAYOUT);
         initGenerateUI();
         initCreateUI();
-        add(pane, BorderLayout.CENTER);
+        contentPane.add(pane, BorderLayout.CENTER);
         submitButton = new JButton("Add Question");
         submitButton.addActionListener(e -> {
             if (pane.getSelectedIndex() == 0) {
@@ -69,10 +75,11 @@ class CreateQuestion extends JFrame {
                 db.close();
             }
         });
-        setMinimumSize(new Dimension(261, 247));
+        contentPane.setMinimumSize(new Dimension(261, 247));
 
-        add(submitButton, BorderLayout.SOUTH);
+        contentPane.add(submitButton, BorderLayout.SOUTH);
         setResizable(true);
+        setContentPane(contentPane);
         setTitle("New Question");
         pack();
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -85,7 +92,8 @@ class CreateQuestion extends JFrame {
             @Override
             public void windowClosing(WindowEvent e) {
                 e.getWindow().dispose();
-                Start.show();
+                if (backToHome)
+                    Start.show();
             }
 
             @Override
@@ -128,7 +136,6 @@ class CreateQuestion extends JFrame {
         generateTabPanel.add(textpanelGenerate);
         settingPanel = new QuadraticGenerateVariables();
         generateTabPanel.add(settingPanel);
-        generateTabPanel.add(new JButton("test"));
         pane.addTab("Generate Question", generateTabPanel);
     }
 
@@ -142,11 +149,6 @@ class CreateQuestion extends JFrame {
         textpanelCreate = new TextPanel(false, true);
         createTabPanel.add(textpanelCreate);
         pane.addTab("Create Question", createTabPanel);
-
-    }
-
-    private void close() {
-
     }
 
     private class TextPanel extends JPanel {
@@ -192,6 +194,9 @@ class CreateQuestion extends JFrame {
             if (showGenerateCheckBox) {
                 add(generateLabel);
                 add(generateValues);
+                generateValues.setSelected(true);
+                setVariablesEnabled(false);
+
                 generateValues.addItemListener(e -> {
                     if (e.getStateChange() == ItemEvent.SELECTED) {
                         setVariablesEnabled(false);
@@ -263,14 +268,14 @@ class CreateQuestion extends JFrame {
         JPanel selectorPanel = new JPanel(new BorderLayout());
         JComboBox<String> comboBox = new JComboBox<>(isGenerate ? questionGenerateTypes : questionCreateTypes);
         if (isGenerate)
-            comboBox.addActionListener(e -> generateBoxChanged(e));
+            comboBox.addActionListener(this::generateBoxChanged);
         else
-            comboBox.addActionListener(e -> createBoxChanged(e));
+            comboBox.addActionListener(this::createBoxChanged);
 
         selectorPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10), BorderFactory.createEtchedBorder(EtchedBorder.LOWERED)));
         selectorPanel.add(new JLabel("Question type: "), BorderLayout.WEST);
         selectorPanel.add(comboBox, BorderLayout.EAST);
-//        selectorPanel.setPreferredSize(new Dimension(256, 45));
+//        selectorPanel.setSize(new Dimension(256, 45));
         return selectorPanel;
     }
 }

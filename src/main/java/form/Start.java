@@ -2,15 +2,19 @@ package form;
 
 import jiconfont.icons.GoogleMaterialDesignIcons;
 import jiconfont.swing.IconFontSwing;
+import model.Test;
+import module.DatabaseManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Start {
     private static JFrame frame;
     private static JPanel panel;
     private static JLabel titleLabel, versionLabel;
-    private static JButton generateButton, browseProblemsButton, browseTestsButton;
+    private static JButton generateButton, browseProblemsButton, browseTestsButton, newTestsButton;
 
     private static void initUI() {
 
@@ -53,15 +57,15 @@ public class Start {
 
         panel.add(browseProblemsButton, constraints);
 
-        browseTestsButton = new JButton("Browse Tests");
-        browseTestsButton.setHorizontalAlignment(SwingConstants.LEFT);
-        browseTestsButton.setPreferredSize(buttonSize);
-        browseTestsButton.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.INSERT_DRIVE_FILE, 20, new Color(0, 169, 255)));
+        newTestsButton = new JButton("New Test");
+        newTestsButton.setHorizontalAlignment(SwingConstants.LEFT);
+        newTestsButton.setPreferredSize(buttonSize);
+        newTestsButton.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.INSERT_DRIVE_FILE, 20, new Color(0, 169, 255)));
 
         constraints.gridy = 4;
-        panel.add(browseTestsButton, constraints);
+        panel.add(newTestsButton, constraints);
 
-        browseTestsButton = new JButton("Browse Students");
+        browseTestsButton = new JButton("Browse Tests");
         browseTestsButton.setHorizontalAlignment(SwingConstants.LEFT);
         browseTestsButton.setPreferredSize(buttonSize);
         browseTestsButton.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.INSERT_DRIVE_FILE, 20, new Color(0, 169, 255)));
@@ -85,11 +89,26 @@ public class Start {
         });
         generateButton.addActionListener(e -> {
             frame.dispose();
-            new CreateQuestion();
+            new CreateQuestion(true);
         });
         browseTestsButton.addActionListener(e -> {
             frame.dispose();
             TestViewer.show();
+        });
+        newTestsButton.addActionListener(e -> {
+            JTextField nameField = new JTextField();
+            JTextField dateField = new JTextField();
+            Object[] message = {
+                    "Name:", nameField,
+                    "Date:", dateField
+            };
+
+            int option = JOptionPane.showConfirmDialog(null, message, "New Test", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon());
+            if (option == JOptionPane.OK_OPTION) {
+                DatabaseManager db = new DatabaseManager();
+                db.insertTest(new Test(nameField.getText(), dateField.getText()));
+                db.close();
+            }
         });
     }
 

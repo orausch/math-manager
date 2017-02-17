@@ -39,21 +39,30 @@ public class RightAngleTrigonometric extends Problem implements Serializable {
     private final int BOT_RIGHT = 3;
     private int IMAGE_HEIGHT = 500;
 
-    public BufferedImage getImage(int zoomFactor) {
-        IMAGE_HEIGHT = zoomFactor;
-        final int PADDING = 50;
-        final int RECTANGLE_SIZE = 10;
 
-        BufferedImage image = new BufferedImage(IMAGE_HEIGHT + PADDING * 2, IMAGE_HEIGHT + PADDING * 2, BufferedImage.TYPE_INT_ARGB);
+    public BufferedImage getImage(int zoomFactor, boolean padding) {
+        IMAGE_HEIGHT = zoomFactor;
+
+        final int PADDING;
+        if (padding) {
+            PADDING = 50;
+        } else {
+            //Padding is still required so that labels are visible
+            PADDING = 20;
+        }
+        final int RECTANGLE_SIZE = 10;
+        BufferedImage image = new BufferedImage(IMAGE_HEIGHT + PADDING * 2, (int) (getScaledSides()[1]+ PADDING * 2), BufferedImage.TYPE_INT_ARGB);
+
         Graphics2D g = image.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-         //Randomising rotation of the triangle
+        //Randomising rotation of the triangle
+
         topLeftX = (int) (PADDING + ((IMAGE_HEIGHT - getScaledSides()[0]) / 2));
         topLeftY = PADDING;
 
         topRightX = (int) (PADDING + ((IMAGE_HEIGHT - getScaledSides()[0]) / 2) + getScaledSides()[0]);
-        topRightY = PADDING;
+        topRightY = PADDING ;
 
         botLeftX = (int) (PADDING + ((IMAGE_HEIGHT - getScaledSides()[0]) / 2));
         botLeftY = (int) (PADDING + getScaledSides()[1]);
@@ -75,7 +84,7 @@ public class RightAngleTrigonometric extends Problem implements Serializable {
                 break;
             case BOT_LEFT:
                 drawTriangle(g, topLeftX, topLeftY, botRightX, botRightY, topRightX, topRightY);
-                g.draw(new Rectangle(botRightX - RECTANGLE_SIZE, PADDING, RECTANGLE_SIZE, RECTANGLE_SIZE));
+                g.draw(new Rectangle(botRightX - RECTANGLE_SIZE, topRightY, RECTANGLE_SIZE, RECTANGLE_SIZE));
                 break;
             case BOT_RIGHT:
                 drawTriangle(g, topLeftX, topLeftY, botLeftX, botLeftY, topRightX, topRightY);
