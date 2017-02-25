@@ -10,11 +10,14 @@ import jiconfont.swing.IconFontSwing;
 import model.*;
 import module.DatabaseManager;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.IOException;
+import java.util.ArrayList;
 
 class QuestionViewer {
     private static JFrame frame;
@@ -78,6 +81,15 @@ class QuestionViewer {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        try {
+            ArrayList<Image> images = new ArrayList<Image>();
+            images.add(ImageIO.read(Start.class.getResource("/20.png")));
+            images.add(ImageIO.read(Start.class.getResource("/40.png")));
+            images.add(ImageIO.read(Start.class.getResource("/60.png")));
+            frame.setIconImages(images);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void initListeners() {

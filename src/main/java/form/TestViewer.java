@@ -10,16 +10,19 @@ import jiconfont.swing.IconFontSwing;
 import model.*;
 import module.DatabaseManager;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 class TestViewer {
     private static Test currentTest;
@@ -70,6 +73,15 @@ class TestViewer {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        try {
+            ArrayList<Image> images = new ArrayList<Image>();
+            images.add(ImageIO.read(Start.class.getResource("/20.png")));
+            images.add(ImageIO.read(Start.class.getResource("/40.png")));
+            images.add(ImageIO.read(Start.class.getResource("/60.png")));
+            frame.setIconImages(images);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void initListeners() {

@@ -10,6 +10,7 @@ import model.Problem;
 import model.Text;
 import module.DatabaseManager;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
@@ -20,6 +21,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.IOException;
+import java.util.ArrayList;
 
 class CreateQuestion extends JFrame {
     private final String[] questionGenerateTypes = {"Quadratic", "Trigonometric"};
@@ -150,6 +153,16 @@ class CreateQuestion extends JFrame {
         });
         setLocationRelativeTo(null);
         setVisible(true);
+
+        try {
+            ArrayList<Image> images = new ArrayList<Image>();
+            images.add(ImageIO.read(Start.class.getResource("/20.png")));
+            images.add(ImageIO.read(Start.class.getResource("/40.png")));
+            images.add(ImageIO.read(Start.class.getResource("/60.png")));
+            setIconImages(images);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void initGenerateUI() {

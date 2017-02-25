@@ -1,15 +1,15 @@
 package form;
 
-import jdk.nashorn.internal.scripts.JO;
 import jiconfont.icons.GoogleMaterialDesignIcons;
 import jiconfont.swing.IconFontSwing;
 import model.Test;
 import module.DatabaseManager;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class Start {
     private static JFrame frame;
@@ -44,7 +44,7 @@ public class Start {
         generateButton = new JButton("New Question");
         generateButton.setHorizontalAlignment(SwingConstants.LEFT);
         generateButton.setPreferredSize(buttonSize);
-        generateButton.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.ADD, 20, new Color(0, 150, 0)));
+        generateButton.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.ADD, 16, new Color(0, 150, 0)));
         constraints.gridy = 2;
         constraints.insets = new Insets(1, 5, 5, 1);
         panel.add(generateButton, constraints);
@@ -52,7 +52,7 @@ public class Start {
         browseProblemsButton = new JButton("Browse Questions");
         browseProblemsButton.setHorizontalAlignment(SwingConstants.LEFT);
         browseProblemsButton.setPreferredSize(buttonSize);
-        browseProblemsButton.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.FOLDER_OPEN, 20, new Color(179, 138, 47)));
+        browseProblemsButton.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.FOLDER_OPEN, 16, new Color(179, 138, 47)));
 
         constraints.gridy = 3;
 
@@ -61,7 +61,7 @@ public class Start {
         newTestsButton = new JButton("New Test");
         newTestsButton.setHorizontalAlignment(SwingConstants.LEFT);
         newTestsButton.setPreferredSize(buttonSize);
-        newTestsButton.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.INSERT_DRIVE_FILE, 20, new Color(0, 169, 255)));
+        newTestsButton.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.INSERT_DRIVE_FILE, 16, new Color(0, 169, 255)));
 
         constraints.gridy = 4;
         panel.add(newTestsButton, constraints);
@@ -69,7 +69,7 @@ public class Start {
         browseTestsButton = new JButton("Browse Tests");
         browseTestsButton.setHorizontalAlignment(SwingConstants.LEFT);
         browseTestsButton.setPreferredSize(buttonSize);
-        browseTestsButton.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.INSERT_DRIVE_FILE, 20, new Color(0, 169, 255)));
+        browseTestsButton.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.INSERT_DRIVE_FILE, 16, new Color(0, 169, 255)));
 
         constraints.gridy = 5;
         panel.add(browseTestsButton, constraints);
@@ -79,6 +79,17 @@ public class Start {
         frame.setResizable(false);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
+
+        try {
+            ArrayList<Image> images = new ArrayList<Image>();
+            images.add(ImageIO.read(Start.class.getResource("/20.png")));
+            images.add(ImageIO.read(Start.class.getResource("/40.png")));
+            images.add(ImageIO.read(Start.class.getResource("/60.png")));
+            frame.setIconImages(images);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         frame.setVisible(true);
     }
 

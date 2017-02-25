@@ -9,8 +9,10 @@ public class StartupManager {
             UIManager.setLookAndFeel(new WebLookAndFeel());
         } catch (Exception ex) {
             ex.printStackTrace();
+
         }
         Start.show();
+
     }
 
 
