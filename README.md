@@ -4,7 +4,7 @@ A Swing based math problem generation program.
 ## Features
  * Generate various math problems randomly
  * Store problems in a database
- * Create tests using generated problems
+ * Create test using generated problems
 
 ## Building from source with Maven
 The source code can be built using [Apache Maven] (https://maven.apache.org/). After Maven is installed, simply navigate to the project root and build using:

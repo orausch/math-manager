@@ -106,16 +106,21 @@ public class Start {
 
             int option = JOptionPane.showConfirmDialog(null, message, "New Test", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon());
             if (option == JOptionPane.OK_OPTION && !nameField.getText().equals("")) {
-                DatabaseManager db = new DatabaseManager();
-                db.insertTest(new Test(nameField.getText(), dateField.getText()));
-                db.close();
-            }else{
-                if(option != JOptionPane.CLOSED_OPTION) {
+                if (!dateField.getText().equals("") && dateField.getText().matches(".*[a-zA-Z].*")) {
                     JOptionPane.showMessageDialog(null,
-                            "Name cannot be empty",
+                            "Date cannot contain letters",
                             "Error",
                             JOptionPane.WARNING_MESSAGE, IconFontSwing.buildIcon(GoogleMaterialDesignIcons.WARNING, 32, Color.ORANGE));
+                } else {
+                    DatabaseManager db = new DatabaseManager();
+                    db.insertTest(new Test(nameField.getText(), dateField.getText()));
+                    db.close();
                 }
+            } else if (option == JOptionPane.OK_OPTION && nameField.getText().equals("")) {
+                JOptionPane.showMessageDialog(null,
+                        "Name cannot be empty",
+                        "Error",
+                        JOptionPane.WARNING_MESSAGE, IconFontSwing.buildIcon(GoogleMaterialDesignIcons.WARNING, 32, Color.ORANGE));
             }
         });
     }

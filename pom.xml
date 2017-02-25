@@ -29,7 +29,27 @@
             <artifactId>jiconfont-swing</artifactId>
             <version>1.0.1</version>
         </dependency>
-
+        <dependency>
+            <groupId>de.sciss</groupId>
+            <artifactId>weblaf-core</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>de.sciss</groupId>
+            <artifactId>weblaf-ui</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+        </dependency>
     </dependencies>
 
     <properties>

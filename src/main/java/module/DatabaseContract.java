@@ -18,7 +18,7 @@ class DatabaseContract {
     }
 
     protected static abstract class Tests {
-        protected static final String TABLE_NAME = "tests";
+        protected static final String TABLE_NAME = "test";
         protected static final String COLUMN_ID = "testid";
         //Question IDs are separated by commas
         protected static final String COLUMN_NAME = "name";

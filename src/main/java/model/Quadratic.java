@@ -7,18 +7,7 @@ public class Quadratic extends Problem {
     private double b;
     private double c;
     private String answer;
-
-    public double getA() {
-        return a;
-    }
-
-    public double getB() {
-        return b;
-    }
-
-    public double getC() {
-        return c;
-    }
+    private String question;
 
     public void setQuestion(String question) {
         this.question = question;
@@ -28,7 +17,8 @@ public class Quadratic extends Problem {
         this.a = a;
         this.b = b;
         this.c = c;
-        this.question = question;
+        setQuestion(question + "Solve for x: " + getStringForm());
+        setAnswer((String.valueOf(getSolution()[0]) + "," + String.valueOf(getSolution()[1])).replaceAll("\\.0", ""));
     }
 
     public Quadratic(String databaseForm, String answer, String question) {
@@ -36,16 +26,15 @@ public class Quadratic extends Problem {
         this.b = parseDatabaseForm(databaseForm)[1];
         this.c = parseDatabaseForm(databaseForm)[2];
         this.answer = answer;
-        setQuestion(question + getStringForm());
+        this.question = question;
     }
 
-    private String question;
 
     public Quadratic(double a, double b, double c) {
         this.a = a;
         this.b = b;
         this.c = c;
-        setQuestion("Solve for x: ");
+        setQuestion("Solve for x: " + getStringForm());
         setAnswer((String.valueOf(getSolution()[0]) + "," + String.valueOf(getSolution()[1])).replaceAll("\\.0", ""));
     }
 
@@ -67,7 +56,7 @@ public class Quadratic extends Problem {
     }
 
 
-    private String getStringForm() {
+    public String getStringForm() {
         String a = String.valueOf(this.a);
         if (this.a == 1) {
             a = "";
@@ -148,5 +137,19 @@ public class Quadratic extends Problem {
         }
         return (getSolution()[0] == inputSolutionsDouble[0] && getSolution()[1] == inputSolutionsDouble[1]) ||
                 (getSolution()[1] == inputSolutionsDouble[0] && getSolution()[0] == inputSolutionsDouble[1]);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Quadratic quadratic = (Quadratic) o;
+
+        if (Double.compare(quadratic.a, a) != 0) return false;
+        if (Double.compare(quadratic.b, b) != 0) return false;
+        if (Double.compare(quadratic.c, c) != 0) return false;
+        if (answer != null ? !answer.equals(quadratic.answer) : quadratic.answer != null) return false;
+        return question != null ? question.equals(quadratic.question) : quadratic.question == null;
     }
 }

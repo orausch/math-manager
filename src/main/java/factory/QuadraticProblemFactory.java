@@ -6,7 +6,7 @@ import module.Util;
 public class QuadraticProblemFactory {
     public static Quadratic generateSolveQuadraticQuestion(int rangeA, int rangeB, int rangeX) {
         Quadratic question = generateQuadratic(rangeA, rangeB, rangeX);
-        question.setQuestion("Solve for x: ");
+        question.setId(1);
         question.setAnswer((String.valueOf(question.getSolution()[0]) + "," + String.valueOf(question.getSolution()[1])).replaceAll("\\.0", ""));
         return question;
     }

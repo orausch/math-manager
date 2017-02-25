@@ -13,5 +13,4 @@ public abstract class Problem {
     public abstract String getAnswer();
     public abstract String getQuestion();
     public abstract boolean checkAnswer(String input);
-
 }

@@ -4,6 +4,7 @@ import jiconfont.icons.GoogleMaterialDesignIcons;
 import jiconfont.swing.IconFontSwing;
 import model.Problem;
 import model.Quadratic;
+import module.Util;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -17,15 +18,14 @@ public class QuadraticCreateVariables extends AbstractProblemVariables {
     public QuadraticCreateVariables() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         JPanel spinners = new JPanel(new FlowLayout());
-        aSpinner = new JSpinner(new SpinnerNumberModel(1, 1, 50, 1));
-        bSpinner = new JSpinner(new SpinnerNumberModel(1, 1, 50, 1));
-        cSpinner = new JSpinner(new SpinnerNumberModel(1, 1, 50, 1));
+        aSpinner = new JSpinner(new SpinnerNumberModel(1, -100, 100, 1));
+        bSpinner = new JSpinner(new SpinnerNumberModel(1, -100, 100, 1));
+        cSpinner = new JSpinner(new SpinnerNumberModel(1, -100, 100, 1));
 
-        spinners.add(new JLabel("A: "));
         spinners.add(aSpinner);
-        spinners.add(new JLabel("B: "));
+        spinners.add(new JLabel(Util.superscript("x^2 + ")));
         spinners.add(bSpinner);
-        spinners.add(new JLabel("C: "));
+        spinners.add(new JLabel(Util.superscript("x + ")));
         spinners.add(cSpinner);
         spinners.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10), BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED), "Coefficients")));
         add(spinners);
@@ -67,7 +67,7 @@ public class QuadraticCreateVariables extends AbstractProblemVariables {
         double solution1 = quadratic.getSolution()[0];
         double solution2 = quadratic.getSolution()[1];
         if (!Double.isNaN(solution1) && !Double.isNaN(solution2)) {
-            return new Quadratic((int) aSpinner.getValue(), (int) bSpinner.getValue(), (int) cSpinner.getValue(), question + "Solve for x: ");
+            return new Quadratic((int) aSpinner.getValue(), (int) bSpinner.getValue(), (int) cSpinner.getValue(), question);
         } else {
             JOptionPane.showMessageDialog(null,
                     "No real roots",

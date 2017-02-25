@@ -20,11 +20,23 @@ public class Text extends Problem {
 
     @Override
     public boolean checkAnswer(String input) {
-        return input.equals(input.trim().replaceAll("\\.0", ""));
+        return input.equals(answer);
     }
 
     @Override
     public String toString() {
         return question;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Text text = (Text) o;
+
+        if (question != null ? !question.equals(text.question) : text.question != null) return false;
+        return answer != null ? answer.equals(text.answer) : text.answer == null;
+    }
+
 }

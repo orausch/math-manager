@@ -5,6 +5,7 @@ import module.Util;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Objects;
 
@@ -277,18 +278,6 @@ public class RightAngleTrigonometric extends Problem implements Serializable {
     private boolean[] isGivenAngle, isGivenSide, isTarget;
 
 
-    public RightAngleTrigonometric(String question, char target, double answer, int unit, double[] sides, double[] angles, boolean[] isGivenSide, boolean[] isGivenAngle, int given, boolean[] isTarget) {
-        this.question = question;
-        this.target = target;
-        this.answer = answer;
-        this.unit = unit;
-        this.sides = sides;
-        this.angles = angles;
-        this.isGivenAngle = isGivenAngle;
-        this.isGivenSide = isGivenSide;
-        this.given = given;
-        this.isTarget = isTarget;
-    }
     public RightAngleTrigonometric(char target, double answer, int unit, double[] sides, double[] angles, boolean[] isGivenSide, boolean[] isGivenAngle, int given, boolean[] isTarget) {
         this.target = target;
         this.answer = answer;
@@ -300,6 +289,7 @@ public class RightAngleTrigonometric extends Problem implements Serializable {
         this.given = given;
         this.isTarget = isTarget;
         question = "";
+        this.setId(1);
     }
 
     @Override
@@ -346,4 +336,42 @@ public class RightAngleTrigonometric extends Problem implements Serializable {
         oos.close();
         return Base64.getEncoder().encodeToString(baos.toByteArray());
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        RightAngleTrigonometric that = (RightAngleTrigonometric) o;
+
+        if (UNIT_MM != that.UNIT_MM) return false;
+        if (UNIT_CM != that.UNIT_CM) return false;
+        if (UNIT_M != that.UNIT_M) return false;
+        if (UNIT_KM != that.UNIT_KM) return false;
+        if (target != that.target) return false;
+        if (Double.compare(that.answer, answer) != 0) return false;
+        if (unit != that.unit) return false;
+        if (given != that.given) return false;
+        if (topLeftX != that.topLeftX) return false;
+        if (topLeftY != that.topLeftY) return false;
+        if (topRightX != that.topRightX) return false;
+        if (topRightY != that.topRightY) return false;
+        if (botLeftX != that.botLeftX) return false;
+        if (botLeftY != that.botLeftY) return false;
+        if (botRightX != that.botRightX) return false;
+        if (botRightY != that.botRightY) return false;
+        if (TOP_LEFT != that.TOP_LEFT) return false;
+        if (TOP_RIGHT != that.TOP_RIGHT) return false;
+        if (BOT_LEFT != that.BOT_LEFT) return false;
+        if (BOT_RIGHT != that.BOT_RIGHT) return false;
+        if (IMAGE_HEIGHT != that.IMAGE_HEIGHT) return false;
+        if (Double.compare(that.a3, a3) != 0) return false;
+        if (question != null ? !question.equals(that.question) : that.question != null) return false;
+        if (!Arrays.equals(sides, that.sides)) return false;
+        if (!Arrays.equals(angles, that.angles)) return false;
+        if (!Arrays.equals(isGivenAngle, that.isGivenAngle)) return false;
+        if (!Arrays.equals(isGivenSide, that.isGivenSide)) return false;
+        return Arrays.equals(isTarget, that.isTarget);
+    }
+
 }

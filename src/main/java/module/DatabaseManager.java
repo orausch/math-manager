@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class DatabaseManager {
-    private final String DB_NAME = "database";
+    private String DB_NAME = "database";
     private Connection conn;
     private Statement stat;
 
@@ -31,10 +31,32 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
+    public DatabaseManager(boolean testing) {
+        if(testing)
+            DB_NAME = "testing";
+
+        try {
+            File file = new File(this.DB_NAME + ".mv.db");
+            boolean createTables = !file.exists() && !file.isDirectory();
+            conn = DriverManager.getConnection("jdbc:h2:./" + this.DB_NAME + ";TRACE_LEVEL_FILE=0");
+            stat = conn.createStatement();
+
+
+            if (createTables) {
+                initDatabase();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void deleteDatabase(){
+        File file = new File(this.DB_NAME + ".mv.db");
+        file.delete();
+    }
 
     private void initDatabase() {
-        //Creating the Tables for the Database
 
+        //Creating the Tables for the Database
         final String CREATE_PROBLEMS_TABLE = "CREATE TABLE "
                 + DatabaseContract.Problems.TABLE_NAME + " ("
                 + DatabaseContract.Problems.COLUMN_ID + " INT PRIMARY KEY AUTO_INCREMENT,"

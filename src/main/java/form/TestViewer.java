@@ -5,9 +5,6 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfWriter;
-import form.question.QuadraticForm;
-import form.question.RightAngleTrigonometricForm;
-import form.question.TextForm;
 import jiconfont.icons.GoogleMaterialDesignIcons;
 import jiconfont.swing.IconFontSwing;
 import model.*;
@@ -17,14 +14,10 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.Font;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -33,7 +26,7 @@ class TestViewer {
     private static JFrame frame;
     private static JToolBar toolBar;
     private static JPanel testDisplay;
-    private static JScrollPane rightPanel, leftPanel;
+    private static JScrollPane leftPanel, rightPanel;
     private static JSplitPane splitPane;
     private static JList<Test> testList;
     private static JButton deleteButton, exportButton, editButton;
@@ -60,12 +53,11 @@ class TestViewer {
         editButton.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.EDIT, 16, Color.BLACK));
         exportButton.setIcon(IconFontSwing.buildIcon(GoogleMaterialDesignIcons.FILE_DOWNLOAD, 16, Color.BLACK));
         testDisplay = new JPanel();
-        testDisplay.setLayout(new BoxLayout(testDisplay, BoxLayout.Y_AXIS));
+        testDisplay.setAlignmentX(Component.CENTER_ALIGNMENT);
+        leftPanel = new JScrollPane(testList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        rightPanel = new JScrollPane(testDisplay, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-        rightPanel = new JScrollPane(testList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        leftPanel = new JScrollPane(testDisplay, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-
-        splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, rightPanel, leftPanel);
+        splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, rightPanel);
         splitPane.setDividerLocation(100);
         toolBar.add(deleteButton);
         toolBar.add(editButton);
@@ -193,9 +185,9 @@ class TestViewer {
                 db.close();
                 testList.setSelectedIndex(index);
                 testList.addListSelectionListener(a -> selectTest());
-                splitPane.remove(rightPanel);
-                rightPanel = new JScrollPane(testList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-                splitPane.add(rightPanel);
+                splitPane.remove(leftPanel);
+                leftPanel = new JScrollPane(testList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+                splitPane.add(leftPanel);
 
                 splitPane.revalidate();
                 frame.repaint();
@@ -212,10 +204,11 @@ class TestViewer {
 
     private static void selectTest() {
         if (!testList.getValueIsAdjusting()) {
-            leftPanel.remove(testDisplay);
+            rightPanel.remove(testDisplay);
             testDisplay.removeAll();
             currentTest = testList.getSelectedValue();
             JLabel imageLabel = new JLabel("");
+            imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             if (getImage(currentTest) != null) {
                 imageLabel.setIcon(new ImageIcon(getImage(currentTest)));
             }
