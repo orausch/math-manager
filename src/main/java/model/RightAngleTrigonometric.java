@@ -39,9 +39,16 @@ public class RightAngleTrigonometric extends Problem implements Serializable {
     private final int BOT_LEFT = 2;
     private final int BOT_RIGHT = 3;
     private int IMAGE_HEIGHT = 500;
-
+    private int lastorientation;
 
     public BufferedImage getImage(int zoomFactor, boolean padding) {
+        return getImage(zoomFactor, padding, (int) Util.getRandomNumber(0, 3));
+    }
+    public int getLastOrientation(){
+        return lastorientation;
+    }
+    public BufferedImage getImage(int zoomFactor, boolean padding, int orientation) {
+        lastorientation = orientation;
         IMAGE_HEIGHT = zoomFactor;
 
         final int PADDING;
@@ -71,10 +78,8 @@ public class RightAngleTrigonometric extends Problem implements Serializable {
         botRightX = (int) (PADDING + ((IMAGE_HEIGHT - getScaledSides()[0]) / 2) + getScaledSides()[0]);
         botRightY = (int) (PADDING + getScaledSides()[1]);
 
-        int cornerToSkip = (int) Util.getRandomNumber(0, 3);
-
         g.setColor(new Color(0, 0, 0));
-        switch (cornerToSkip) {
+        switch (orientation) {
             case TOP_LEFT:
                 drawTriangle(g, topRightX, topRightY, botLeftX, botLeftY, botRightX, botRightY);
                 g.draw(new Rectangle(botRightX - RECTANGLE_SIZE, botRightY - RECTANGLE_SIZE, RECTANGLE_SIZE, RECTANGLE_SIZE));
@@ -92,7 +97,7 @@ public class RightAngleTrigonometric extends Problem implements Serializable {
                 g.draw(new Rectangle(topLeftX, topLeftY, RECTANGLE_SIZE, RECTANGLE_SIZE));
                 break;
         }
-        drawLabels(g, cornerToSkip);
+        drawLabels(g, orientation);
         return image;
     }
 

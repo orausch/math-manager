@@ -40,14 +40,14 @@ public class RightAngleTrigonometricForm extends AbstractProblemForm {
     }
 
     public void increaseScaleClicked() {
-        zoomFactor += 50;
-        imageLabel.setIcon(new ImageIcon(question.getImage(zoomFactor, true)));
+        zoomFactor += 20;
+        imageLabel.setIcon(new ImageIcon(question.getImage(zoomFactor, true, question.getLastOrientation())));
 
     }
 
     public void decreaseScaleClicked() {
-        zoomFactor -= 50;
-        imageLabel.setIcon(new ImageIcon(question.getImage(zoomFactor, true)));
+        zoomFactor -= 20;
+        imageLabel.setIcon(new ImageIcon(question.getImage(zoomFactor, true, question.getLastOrientation())));
 
     }
 }
