@@ -17,7 +17,7 @@ public class Quadratic extends Problem {
         this.a = a;
         this.b = b;
         this.c = c;
-        setQuestion(question + "Solve for x: " + getStringForm());
+        setQuestion(question + "Solve for x: ");
         setAnswer((String.valueOf(getSolution()[0]) + "," + String.valueOf(getSolution()[1])).replaceAll("\\.0", ""));
     }
 
@@ -93,8 +93,6 @@ public class Quadratic extends Problem {
     }
 
     private String addSign(double d) {
-
-        d = d - 2 * d;
         if (d >= 0) {
             return "+" + d;
         } else {
