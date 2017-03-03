@@ -74,7 +74,7 @@ class TestViewer {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         try {
-            ArrayList<Image> images = new ArrayList<Image>();
+            ArrayList<Image> images = new ArrayList<>();
             images.add(ImageIO.read(Start.class.getResource("/20.png")));
             images.add(ImageIO.read(Start.class.getResource("/40.png")));
             images.add(ImageIO.read(Start.class.getResource("/60.png")));
@@ -142,9 +142,11 @@ class TestViewer {
                 fileChooser.setFileFilter(new FileNameExtensionFilter("PDF Files", "pdf"));
                 fileChooser.setApproveButtonText("Export");
                 fileChooser.setDialogTitle("Export as PDF");
-                int result = fileChooser.showOpenDialog(null);
+                int result = fileChooser.showSaveDialog(null);
                 if (result == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = fileChooser.getSelectedFile();
+
+                    selectedFile = new File(selectedFile.getAbsolutePath().concat(".pdf"));
 
                     BufferedImage bufferedImage = getImage(testList.getSelectedValue());
                     final float PAGE_WIDTH = 700;

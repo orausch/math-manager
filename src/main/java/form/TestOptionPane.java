@@ -16,8 +16,8 @@ class TestOptionPane extends JFrame {
 
         DatabaseManager db = new DatabaseManager();
         Test[] tests = db.getTestsArray();
+        boolean empty = tests.length == 0;
         JList<Test> testList = new JList<>(tests);
-
         db.close();
 
         JScrollPane testScroller = new JScrollPane(testList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -33,7 +33,9 @@ class TestOptionPane extends JFrame {
         buttonPanel.add(addButton);
         buttonPanel.add(cancelButton);
         contentPane.add(buttonPanel, BorderLayout.SOUTH);
-
+        if(!empty){
+            testList.setSelectedIndex(0);
+        }
         addButton.addActionListener(e -> {
             DatabaseManager db1 = new DatabaseManager();
             if(!testList.isSelectionEmpty()) {

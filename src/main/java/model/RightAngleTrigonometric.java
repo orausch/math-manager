@@ -268,7 +268,7 @@ public class RightAngleTrigonometric extends Problem implements Serializable {
 
     @Override
     public String getQuestion() {
-        return question;
+        return question + toString();
     }
 
     @Override
@@ -293,7 +293,7 @@ public class RightAngleTrigonometric extends Problem implements Serializable {
         this.isGivenSide = isGivenSide;
         this.given = given;
         this.isTarget = isTarget;
-        question = "";
+        this.question = "";
         this.setId(1);
     }
 
@@ -349,10 +349,7 @@ public class RightAngleTrigonometric extends Problem implements Serializable {
 
         RightAngleTrigonometric that = (RightAngleTrigonometric) o;
 
-        if (UNIT_MM != that.UNIT_MM) return false;
-        if (UNIT_CM != that.UNIT_CM) return false;
-        if (UNIT_M != that.UNIT_M) return false;
-        if (UNIT_KM != that.UNIT_KM) return false;
+
         if (target != that.target) return false;
         if (Double.compare(that.answer, answer) != 0) return false;
         if (unit != that.unit) return false;
@@ -365,10 +362,6 @@ public class RightAngleTrigonometric extends Problem implements Serializable {
         if (botLeftY != that.botLeftY) return false;
         if (botRightX != that.botRightX) return false;
         if (botRightY != that.botRightY) return false;
-        if (TOP_LEFT != that.TOP_LEFT) return false;
-        if (TOP_RIGHT != that.TOP_RIGHT) return false;
-        if (BOT_LEFT != that.BOT_LEFT) return false;
-        if (BOT_RIGHT != that.BOT_RIGHT) return false;
         if (IMAGE_HEIGHT != that.IMAGE_HEIGHT) return false;
         if (Double.compare(that.a3, a3) != 0) return false;
         if (question != null ? !question.equals(that.question) : that.question != null) return false;
