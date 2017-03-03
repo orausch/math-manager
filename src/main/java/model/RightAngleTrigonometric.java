@@ -268,7 +268,7 @@ public class RightAngleTrigonometric extends Problem implements Serializable {
 
     @Override
     public String getQuestion() {
-        return question + toString();
+        return toString();
     }
 
     @Override

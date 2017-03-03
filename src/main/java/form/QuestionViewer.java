@@ -82,7 +82,7 @@ class QuestionViewer {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         try {
-            ArrayList<Image> images = new ArrayList<Image>();
+            ArrayList<Image> images = new ArrayList<>();
             images.add(ImageIO.read(Start.class.getResource("/20.png")));
             images.add(ImageIO.read(Start.class.getResource("/40.png")));
             images.add(ImageIO.read(Start.class.getResource("/60.png")));
@@ -126,6 +126,7 @@ class QuestionViewer {
             public void windowActivated(WindowEvent e) {
 
             }
+
             @Override
             public void windowDeactivated(WindowEvent e) {
 
@@ -142,8 +143,9 @@ class QuestionViewer {
                 problems = db.getProblemsArray();
                 db.close();
                 problemList = new JList<>(problems);
-                problemList.setSelectedIndex(index);
+                problemList.setSelectedIndex(index == 0 ? 0 : index - 1);
                 problemList.addListSelectionListener(a -> selectProblem());
+                selectProblem();
                 splitPane.remove(scrollPaneProblems);
                 scrollPaneProblems = new JScrollPane(problemList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
                 splitPane.add(scrollPaneProblems);
