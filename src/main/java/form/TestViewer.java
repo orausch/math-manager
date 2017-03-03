@@ -25,14 +25,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 class TestViewer {
-    private static Test currentTest;
     private static JFrame frame;
-    private static JToolBar toolBar;
     private static JPanel testDisplay;
     private static JScrollPane leftPanel, rightPanel;
     private static JSplitPane splitPane;
     private static JList<Test> testList;
     private static JButton deleteButton, exportButton, editButton;
+    private static final float PAGE_WIDTH = 700;
+    private static final float PAGE_HEIGHT = 700 * 1.414f;
 
 
     static void show() {
@@ -42,7 +42,7 @@ class TestViewer {
 
     private static void initUI() {
         frame = new JFrame("Test Viewer");
-        toolBar = new JToolBar();
+        JToolBar toolBar = new JToolBar();
         toolBar.setFloatable(false);
 
         DatabaseManager db = new DatabaseManager();
@@ -148,9 +148,8 @@ class TestViewer {
 
                     selectedFile = new File(selectedFile.getAbsolutePath().concat(".pdf"));
 
-                    BufferedImage bufferedImage = getImage(testList.getSelectedValue());
-                    final float PAGE_WIDTH = 700;
-                    final float PAGE_HEIGHT = 700 * 1.414f;
+                    BufferedImage bufferedImage = getImage(testList.getSelectedValue(), true);
+
                     assert bufferedImage != null;
                     int requiredPages = (int) Math.ceil(bufferedImage.getHeight() / PAGE_HEIGHT);
                     //Splitting the image into pages
@@ -220,11 +219,11 @@ class TestViewer {
         if (!testList.getValueIsAdjusting()) {
             rightPanel.remove(testDisplay);
             testDisplay.removeAll();
-            currentTest = testList.getSelectedValue();
+            Test currentTest = testList.getSelectedValue();
             JLabel imageLabel = new JLabel("");
             imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-            if (getImage(currentTest) != null) {
-                imageLabel.setIcon(new ImageIcon(getImage(currentTest)));
+            if (getImage(currentTest, false) != null) {
+                imageLabel.setIcon(new ImageIcon(getImage(currentTest, false)));
             }
             testDisplay.add(imageLabel);
             testDisplay.revalidate();
@@ -232,11 +231,11 @@ class TestViewer {
         }
     }
 
-    private static BufferedImage getImage(Test test) {
+    private static BufferedImage getImage(Test test, boolean spreadAcrossPageBreaks) {
 
         if (test.getQuestions() != null) {
             if (!test.getQuestions().isEmpty()) {
-                int totalHeight = 150;
+                int totalHeight = 300;
                 final int FONT_HEIGHT = 50;
                 for (Problem p : test.getQuestions()) {
                     if (p instanceof RightAngleTrigonometric)
@@ -266,13 +265,27 @@ class TestViewer {
                 currentY += FONT_HEIGHT;
                 for (Problem p : test.getQuestions()) {
                     g.setFont(QUESTION);
-                    g.drawString(p.getQuestion(), 10, currentY);
-                    currentY += FONT_HEIGHT;
+
 
                     if (p instanceof RightAngleTrigonometric) {
-                        RightAngleTrigonometric problem = (RightAngleTrigonometric) p;
-                        g.drawImage(problem.getImage(500, false), 10, currentY, null);
-                        currentY += problem.getImage(500, false).getHeight() + 20;
+
+                        if (spaceToNextPageBreak(currentY) < 500 && spreadAcrossPageBreaks) {
+                            currentY += spaceToNextPageBreak(currentY) + 20;
+                            g.drawString(p.getQuestion(), 10, currentY);
+                            currentY += FONT_HEIGHT;
+                            RightAngleTrigonometric problem = (RightAngleTrigonometric) p;
+                            g.drawImage(problem.getImage(500, false), 10, currentY, null);
+                            currentY += problem.getImage(500, false).getHeight() + 20;
+                        } else {
+                            g.drawString(p.getQuestion(), 10, currentY);
+                            currentY += FONT_HEIGHT;
+                            RightAngleTrigonometric problem = (RightAngleTrigonometric) p;
+                            g.drawImage(problem.getImage(500, false), 10, currentY, null);
+                            currentY += problem.getImage(500, false).getHeight() + 20;
+                        }
+                    } else {
+                        g.drawString(p.getQuestion(), 10, currentY);
+                        currentY += FONT_HEIGHT;
                     }
                     g.setFont(ANSWER);
                     g.drawString("Answer:____________", 450, currentY);
@@ -289,5 +302,16 @@ class TestViewer {
         int y = (int) (((rect.getHeight() - metrics.getHeight()) / 2) + metrics.getAscent());
         g.setFont(font);
         g.drawString(text, x, y);
+    }
+
+    private static int spaceToNextPageBreak(int y) {
+        int currentPageY;
+        for (int i = 1; ; i++) {
+            currentPageY = (int) (i * PAGE_HEIGHT);
+            if (y < (currentPageY * (i + 1))) {
+                return currentPageY - y;
+            }
+
+        }
     }
 }
