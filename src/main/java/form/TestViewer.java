@@ -145,7 +145,6 @@ class TestViewer {
                 int result = fileChooser.showSaveDialog(null);
                 if (result == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = fileChooser.getSelectedFile();
-
                     selectedFile = new File(selectedFile.getAbsolutePath().concat(".pdf"));
 
                     BufferedImage bufferedImage = getImage(testList.getSelectedValue(), true);
@@ -243,7 +242,7 @@ class TestViewer {
                     totalHeight += 2 * FONT_HEIGHT;
                 }
 
-                BufferedImage image = new BufferedImage(600, totalHeight, BufferedImage.TYPE_INT_ARGB);
+                BufferedImage image = new BufferedImage(630, totalHeight, BufferedImage.TYPE_INT_ARGB);
                 Graphics2D g = image.createGraphics();
                 g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 g.setBackground(Color.WHITE);
