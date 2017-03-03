@@ -10,7 +10,7 @@ public class Quadratic extends Problem {
     private String question;
 
     public void setQuestion(String question) {
-        this.question = question;
+        this.question = question + getStringForm();
     }
 
     public Quadratic(double a, double b, double c, String question) {
@@ -34,7 +34,7 @@ public class Quadratic extends Problem {
         this.a = a;
         this.b = b;
         this.c = c;
-        setQuestion("Solve for x: " + getStringForm());
+        setQuestion("Solve for x: ");
         setAnswer((String.valueOf(getSolution()[0]) + "," + String.valueOf(getSolution()[1])).replaceAll("\\.0", ""));
     }
 
@@ -56,14 +56,14 @@ public class Quadratic extends Problem {
     }
 
 
-    public String getStringForm() {
+    private String getStringForm() {
         String a = String.valueOf(this.a);
         if (this.a == 1) {
             a = "";
         } else if (this.a == -1) {
             a = "-";
         }
-        String b = (this.a != 0) ? addSign(this.b, false) : String.valueOf(this.b);
+        String b = (this.a != 0) ? addSign(this.b) : String.valueOf(this.b);
 
         if (this.b == 1 && this.a != 0) {
             b = "+";
@@ -81,21 +81,20 @@ public class Quadratic extends Problem {
             sb.append(b).append("x");
         }
         if (this.c != 0) {
-            sb.append(addSign(c, false));
+            sb.append(addSign(c));
         }
 
         return Util.superscript(sb.toString().replaceAll("\\.0", ""));
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return question;
     }
 
-    private String addSign(double d, boolean reverseSign) {
-        if (reverseSign) {
-            d = d - 2 * d;
-        }
+    private String addSign(double d) {
+
+        d = d - 2 * d;
         if (d >= 0) {
             return "+" + d;
         } else {
