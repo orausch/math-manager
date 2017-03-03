@@ -273,14 +273,14 @@ class TestViewer {
                             g.drawString(p.getQuestion(), 10, currentY);
                             currentY += FONT_HEIGHT;
                             RightAngleTrigonometric problem = (RightAngleTrigonometric) p;
-                            g.drawImage(problem.getImage(500, false), 10, currentY, null);
-                            currentY += problem.getImage(500, false).getHeight() + 20;
+                            g.drawImage(problem.getImage(450, false), 10, currentY, null);
+                            currentY += problem.getImage(450, false).getHeight() + 20;
                         } else {
                             g.drawString(p.getQuestion(), 10, currentY);
                             currentY += FONT_HEIGHT;
                             RightAngleTrigonometric problem = (RightAngleTrigonometric) p;
-                            g.drawImage(problem.getImage(500, false), 10, currentY, null);
-                            currentY += problem.getImage(500, false).getHeight() + 20;
+                            g.drawImage(problem.getImage(450, false), 10, currentY, null);
+                            currentY += problem.getImage(450, false).getHeight() + 20;
                         }
                     } else {
                         g.drawString(p.getQuestion(), 10, currentY);
