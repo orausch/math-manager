@@ -1,5 +1,9 @@
 package model;
 
+/**
+ * The model class for a problem. All types of problems MUST inherit from this class in order to function with the data-
+ * base and the rest of the program.
+ */
 public abstract class Problem {
 
     private int id;
