@@ -3,7 +3,7 @@ package form;
 import jiconfont.icons.GoogleMaterialDesignIcons;
 import jiconfont.swing.IconFontSwing;
 import model.Test;
-import module.DatabaseManager;
+import util.DatabaseManager;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -11,6 +11,9 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * The start form shown at the beginning of the program
+ */
 public class Start {
     private static JFrame frame;
     private static JPanel panel;
@@ -81,7 +84,7 @@ public class Start {
         frame.setLocationRelativeTo(null);
 
         try {
-            ArrayList<Image> images = new ArrayList<Image>();
+            ArrayList<Image> images = new ArrayList<>();
             images.add(ImageIO.read(Start.class.getResource("/20.png")));
             images.add(ImageIO.read(Start.class.getResource("/40.png")));
             images.add(ImageIO.read(Start.class.getResource("/60.png")));
@@ -136,6 +139,9 @@ public class Start {
         });
     }
 
+    /**
+     * Initialise and show the form
+     */
     public static void show() {
         initUI();
         initListeners();

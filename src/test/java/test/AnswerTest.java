@@ -1,20 +1,17 @@
 package test;
 
 import model.Quadratic;
-import model.Text;
-import module.Util;
 import org.junit.Test;
-
-import java.math.BigInteger;
-import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 
 public class AnswerTest {
 
+    /**
+     * Check that the checkAnswer function of the Quadratic model works with various known cases.
+     */
     @Test
     public void quadraticAnswerTest() {
-        //Check various cases for a known question
         Quadratic quadratic = new Quadratic(1, 4, -285);
         assertEquals(true, quadratic.checkAnswer("15,-19"));
         assertEquals(true, quadratic.checkAnswer("-19,15"));

@@ -4,22 +4,28 @@ import jiconfont.icons.GoogleMaterialDesignIcons;
 import jiconfont.swing.IconFontSwing;
 import model.Problem;
 import model.Test;
-import module.DatabaseManager;
+import util.DatabaseManager;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.Collections;
 import java.util.LinkedList;
 
+/**
+ * The form used to move or delete questions in a test
+ */
 class EditTest extends JFrame {
     private JList testList;
     private JScrollPane scrollPane;
 
+    /**
+     * Initialise the EditTest form
+     *
+     * @param test the test to edit
+     */
     EditTest(Test test) {
         JPanel contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));

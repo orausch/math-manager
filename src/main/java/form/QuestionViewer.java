@@ -1,24 +1,28 @@
 package form;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
 import form.question.AbstractProblemForm;
 import form.question.QuadraticForm;
 import form.question.RightAngleTrigonometricForm;
 import form.question.TextForm;
 import jiconfont.icons.GoogleMaterialDesignIcons;
 import jiconfont.swing.IconFontSwing;
-import model.*;
-import module.DatabaseManager;
+import model.Problem;
+import model.Quadratic;
+import model.RightAngleTrigonometric;
+import model.Text;
+import util.DatabaseManager;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * The form that shows all the questions
+ */
 class QuestionViewer {
     private static JFrame frame;
     private static JPanel listsPanel, questionPanel, rightPanel;
@@ -173,11 +177,18 @@ class QuestionViewer {
         });
     }
 
+    /**
+     * Initialise and show the form
+     */
     static void show() {
         initUI();
         initListeners();
     }
 
+    /**
+     * Removes the current problem and replaces it with the selected problem. This is called every time the user clicks
+     * the list.
+     */
     private static void selectProblem() {
         if (!problemList.getValueIsAdjusting() && !problemList.isSelectionEmpty()) {
             int index = problemList.getSelectedIndex();

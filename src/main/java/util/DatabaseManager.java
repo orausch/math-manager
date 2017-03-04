@@ -1,7 +1,5 @@
-package module;
+package util;
 
-import factory.QuadraticProblemFactory;
-import factory.RightAngleTrigonometricProblemFactory;
 import model.*;
 
 import java.io.File;
@@ -10,6 +8,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+/**
+ * A utility class used for all database operations
+ */
 public class DatabaseManager {
     private String DB_NAME = "database";
     private Connection conn;
@@ -31,6 +32,7 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
+
     public DatabaseManager(boolean testing) {
         if(testing)
             DB_NAME = "testing";
@@ -49,11 +51,15 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
+
     public void deleteDatabase(){
         File file = new File(this.DB_NAME + ".mv.db");
         file.delete();
     }
 
+    /**
+     * Initialises the database
+     */
     private void initDatabase() {
 
         //Creating the Tables for the Database
@@ -80,6 +86,11 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Get an array of all problems in the Database
+     *
+     * @return the array of problems
+     */
     public Problem[] getProblemsArray() {
         try {
             ResultSet rs = stat.executeQuery("SELECT * FROM " + DatabaseContract.Problems.TABLE_NAME);
@@ -117,6 +128,12 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Get a problem with a specified ID
+     *
+     * @param id id that should be located
+     * @return the object of the problem with the specified ID
+     */
     private Problem getProblem(int id) {
         try {
             ResultSet rs = stat.executeQuery("SELECT * FROM " + DatabaseContract.Problems.TABLE_NAME + " WHERE " + DatabaseContract.Problems.COLUMN_ID + "=" + id);
@@ -147,6 +164,11 @@ public class DatabaseManager {
         return new Text("Error", "Error");
     }
 
+    /**
+     * Insert a problem into the database
+     *
+     * @param problem the problem to be inserted
+     */
     public void insertProblem(Problem problem) {
         String statement = "INSERT INTO "
                 + DatabaseContract.Problems.TABLE_NAME
@@ -187,6 +209,10 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Delete a problem from the database
+     * @param problem the problem to be deleted
+     */
     public void deleteProblem(Problem problem) {
         String statement = "DELETE FROM "
                 + DatabaseContract.Problems.TABLE_NAME
@@ -200,6 +226,10 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Insert a Test into the database
+     * @param test the test to be inserted
+     */
     public void insertTest(Test test) {
         String ids = "";
         if (!test.getQuestions().isEmpty()) {
@@ -227,6 +257,11 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Insert a Test into the database, with specified problem ids
+     * @param test the test to be inserted
+     * @param ids the problem ids
+     */
     private void insertTest(Test test, String ids) {
         String statement = "INSERT INTO "
                 + DatabaseContract.Tests.TABLE_NAME
@@ -244,6 +279,10 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Delete a test from the database
+     * @param test the test to be deleted
+     */
     public void deleteTest(Test test) {
         String statement = "DELETE FROM "
                 + DatabaseContract.Tests.TABLE_NAME
@@ -257,6 +296,11 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Insert a problem into a test
+     * @param problem the problem to be inserted
+     * @param test the test to insert the problem into
+     */
     public void insertIntoTest(Problem problem, Test test) {
         String ids = "";
         if (!test.getQuestions().isEmpty()) {
@@ -272,6 +316,10 @@ public class DatabaseManager {
         insertTest(test, ids);
     }
 
+    /**
+     * Get an array of all the Tests in the database
+     * @return the array of tests
+     */
     public Test[] getTestsArray() {
         try {
             ArrayList<Test> tests = new ArrayList<>();
@@ -305,6 +353,9 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Close the database connection. Should be called after every time the database is used.
+     */
     public void close() {
         try {
             stat.close();

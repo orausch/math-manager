@@ -4,7 +4,7 @@ import jiconfont.icons.GoogleMaterialDesignIcons;
 import jiconfont.swing.IconFontSwing;
 import model.Problem;
 import model.Quadratic;
-import module.Util;
+import util.Utility;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -23,9 +23,9 @@ public class QuadraticCreateVariables extends AbstractProblemVariables {
         cSpinner = new JSpinner(new SpinnerNumberModel(1, -100, 100, 1));
 
         spinners.add(aSpinner);
-        spinners.add(new JLabel(Util.superscript("x^2 + ")));
+        spinners.add(new JLabel(Utility.superscript("x^2 + ")));
         spinners.add(bSpinner);
-        spinners.add(new JLabel(Util.superscript("x + ")));
+        spinners.add(new JLabel(Utility.superscript("x + ")));
         spinners.add(cSpinner);
         spinners.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10), BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED), "Coefficients")));
         add(spinners);

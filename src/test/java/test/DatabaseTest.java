@@ -5,18 +5,24 @@ import factory.RightAngleTrigonometricProblemFactory;
 import model.Quadratic;
 import model.RightAngleTrigonometric;
 import model.Text;
-import module.DatabaseManager;
-import module.Util;
 import org.junit.Test;
+import util.DatabaseManager;
+import util.Utility;
 
 import java.math.BigInteger;
 import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Various tests aimed at the database functionality
+ */
 public class DatabaseTest {
 
-    @Test // Check if a quadratic problem is equal when written and read from database
+    /**
+     * Check if a quadratic problem is equal when written and read from database
+     */
+    @Test
     public void quadraticReadWrite() {
         DatabaseManager write = new DatabaseManager(true);
         Quadratic quadratic = QuadraticProblemFactory.generateSolveQuadraticQuestion(3, 20, 20);
@@ -31,7 +37,10 @@ public class DatabaseTest {
         assertEquals(quadratic, quadratic1);
     }
 
-    @Test // Check if a quadratic problem is equal when written and read from database
+    /**
+     * Check if a quadratic problem is equal when written and read from database
+     */
+    @Test
     public void trigReadWrite() {
         DatabaseManager write = new DatabaseManager(true);
         RightAngleTrigonometric trigonometric = RightAngleTrigonometricProblemFactory.generateRightAngleTrigonometricProblem(1);
@@ -46,11 +55,14 @@ public class DatabaseTest {
         assertEquals(trigonometric, trigonometric1);
     }
 
-    @Test // Check if a text problem is equal when written and read from database
+    /**
+     * Check if a text problem is equal when written and read from database
+     */
+    @Test
     public void textReadWrite() {
         //Generate a Random String to use as Question
         String randomQuestion = new BigInteger(130, new Random()).toString(32);
-        String randomAnswer = String.valueOf(Util.getRandomNumber(10000,10000));
+        String randomAnswer = String.valueOf(Utility.getRandomNumber(10000, 10000));
 
         DatabaseManager write = new DatabaseManager(true);
         Text text = new Text(randomQuestion, randomAnswer);

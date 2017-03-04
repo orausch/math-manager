@@ -1,6 +1,6 @@
 package model;
 
-import module.Util;
+import util.Utility;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -42,7 +42,7 @@ public class RightAngleTrigonometric extends Problem implements Serializable {
     private int lastorientation;
 
     public BufferedImage getImage(int zoomFactor, boolean padding) {
-        return getImage(zoomFactor, padding, (int) Util.getRandomNumber(0, 3));
+        return getImage(zoomFactor, padding, (int) Utility.getRandomNumber(0, 3));
     }
     public int getLastOrientation(){
         return lastorientation;
@@ -127,7 +127,7 @@ public class RightAngleTrigonometric extends Problem implements Serializable {
         String[] sidesLabels = new String[3];
         for (int i = 0; i < sides.length; i++) {
             if (isGivenSide[i]) {
-                sidesLabels[i] = String.valueOf(Util.round(sides[i], 1)) + " " + getUnit();
+                sidesLabels[i] = String.valueOf(Utility.round(sides[i], 1)) + " " + getUnit();
             } else if (isTarget[i]) {
                 sidesLabels[i] = String.valueOf(target);
             } else {
@@ -137,7 +137,7 @@ public class RightAngleTrigonometric extends Problem implements Serializable {
         String[] anglesLabels = new String[2];
         for (int i = 0; i < anglesLabels.length; i++) {
             if (isGivenAngle[i]) {
-                anglesLabels[i] = String.valueOf(Util.round(angles[i], 1)) + "°";
+                anglesLabels[i] = String.valueOf(Utility.round(angles[i], 1)) + "°";
             } else if (isTarget[i + 3]) {
                 anglesLabels[i] = String.valueOf(target);
             } else {

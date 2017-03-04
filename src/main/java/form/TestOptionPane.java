@@ -1,17 +1,24 @@
 package form;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
 import jiconfont.icons.GoogleMaterialDesignIcons;
 import jiconfont.swing.IconFontSwing;
 import model.Problem;
 import model.Test;
-import module.DatabaseManager;
+import util.DatabaseManager;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
+/**
+ * The pane used to ask the user what test to add the specified problem to
+ */
 class TestOptionPane extends JFrame {
+    /**
+     * Initialise and show the TestOptionPane
+     *
+     * @param currentProblem the problem to be added
+     */
     TestOptionPane(Problem currentProblem) {
 
         DatabaseManager db = new DatabaseManager();
@@ -48,7 +55,6 @@ class TestOptionPane extends JFrame {
                         "Error",
                         JOptionPane.WARNING_MESSAGE, IconFontSwing.buildIcon(GoogleMaterialDesignIcons.WARNING, 32, Color.ORANGE));
             }
-
 
 
         });

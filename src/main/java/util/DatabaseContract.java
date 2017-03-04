@@ -1,5 +1,8 @@
-package module;
+package util;
 
+/**
+ * This class contains the required constants used in the database
+ */
 class DatabaseContract {
 
     protected static abstract class Problems {

@@ -9,11 +9,19 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
+/**
+ * The Form used to input and check all answers in the QuestionViewer
+ */
 class AnswerForm extends JPanel {
     private JButton submitButton, showButton;
     private JTextField answerField;
     private Problem problem;
 
+    /**
+     * Initialise a new answer form
+     *
+     * @param problem the parent problem
+     */
     AnswerForm(Problem problem) {
         super(new GridLayout(1, 3));
         this.problem = problem;
@@ -58,6 +66,11 @@ class AnswerForm extends JPanel {
         add(showButton);
     }
 
+    /**
+     * Check if the answer is correct or incorrect
+     *
+     * @return if the text in the answerField matches the problem's answer
+     */
     private Boolean isAnswerCorrect() {
         try {
             String input = answerField.getText().replaceAll("\\.0", "");

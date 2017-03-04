@@ -8,14 +8,12 @@ import jiconfont.icons.GoogleMaterialDesignIcons;
 import jiconfont.swing.IconFontSwing;
 import model.Problem;
 import model.Text;
-import module.DatabaseManager;
+import util.DatabaseManager;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
@@ -24,6 +22,9 @@ import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * The form used to create new questions
+ */
 class CreateQuestion extends JFrame {
     private final String[] questionGenerateTypes = {"Quadratic", "Trigonometric"};
     private final String[] questionCreateTypes = {"Text", "Quadratic"};

@@ -1,6 +1,6 @@
 package model;
 
-import module.Util;
+import util.Utility;
 
 public class Quadratic extends Problem {
     private double a;
@@ -84,7 +84,7 @@ public class Quadratic extends Problem {
             sb.append(addSign(c));
         }
 
-        return Util.superscript(sb.toString().replaceAll("\\.0", ""));
+        return Utility.superscript(sb.toString().replaceAll("\\.0", ""));
     }
 
     @Override

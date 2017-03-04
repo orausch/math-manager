@@ -1,7 +1,7 @@
 package form.question;
 
 import model.Quadratic;
-import module.Util;
+import util.Utility;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +12,7 @@ public class QuadraticForm extends AbstractProblemForm {
 
     public QuadraticForm(Quadratic quadratic) {
         super(quadratic);
-        questionLabel = new JLabel(Util.superscript(quadratic.getQuestion()));
+        questionLabel = new JLabel(Utility.superscript(quadratic.getQuestion()));
         questionLabel.setFont(new Font(questionLabel.getFont().getName(), Font.BOLD, 20));
         add(questionLabel);
     }
