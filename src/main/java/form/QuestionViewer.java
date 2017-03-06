@@ -192,19 +192,17 @@ class QuestionViewer {
     private static void selectProblem() {
         if (!problemList.getValueIsAdjusting() && !problemList.isSelectionEmpty()) {
             int index = problemList.getSelectedIndex();
+            questionPanel.removeAll();
             if (problems[index] instanceof Quadratic) {
-                questionPanel.removeAll();
                 currentProblem = new QuadraticForm((Quadratic) problems[index]);
             } else if (problems[index] instanceof RightAngleTrigonometric) {
-                questionPanel.removeAll();
                 currentProblem = new RightAngleTrigonometricForm(problems[index]);
                 try {
                     increaseScale.addActionListener(e -> ((RightAngleTrigonometricForm) currentProblem).increaseScaleClicked());
                     decreaseScale.addActionListener(e -> ((RightAngleTrigonometricForm) currentProblem).decreaseScaleClicked());
-                } catch (Exception ignored) {
+                } catch (Exception ignored) {//This exception will never be thrown because currentProblem is always of type RightAngleTrigonometric
                 }
             } else if (problems[index] instanceof Text) {
-                questionPanel.removeAll();
                 currentProblem = new TextForm(problems[index]);
             }
             questionPanel.add(currentProblem, BorderLayout.NORTH);
