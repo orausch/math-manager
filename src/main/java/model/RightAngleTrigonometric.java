@@ -102,16 +102,20 @@ public class RightAngleTrigonometric extends Problem implements Serializable {
     }
 
     private double[] getScaledSides() {
+        //Determine the index of the longest side
         int longestSide = sides[0] > sides[1] ? 0 : 1;
 
         double[] scaledSides = new double[3];
 
+        //The longest side is always scaled to equal the overall image height
         scaledSides[longestSide] = IMAGE_HEIGHT;
 
         double scalingFactor = IMAGE_HEIGHT / sides[longestSide];
 
+        //scale the other side by the calculated scaling factor
         scaledSides[longestSide == 0 ? 1 : 0] = sides[longestSide == 0 ? 1 : 0] * scalingFactor;
 
+        //scale the hypotenuse
         scaledSides[2] = sides[2] * scalingFactor;
         return scaledSides;
     }

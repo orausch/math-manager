@@ -19,9 +19,10 @@ public class DatabaseManager {
     public DatabaseManager() {
         try {
             File file = new File(this.DB_NAME + ".mv.db");
-
+            //create tables if database does not exist yet
             boolean createTables = !file.exists() && !file.isDirectory();
             conn = DriverManager.getConnection("jdbc:h2:./" + this.DB_NAME + ";TRACE_LEVEL_FILE=0");
+            //TRACE_LEVEL_FILE=0 prevents h2 from creating a log file everytime
             stat = conn.createStatement();
 
 
