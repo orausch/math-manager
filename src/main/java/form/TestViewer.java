@@ -304,6 +304,11 @@ class TestViewer {
         g.drawString(text, x, y);
     }
 
+    /**
+     * Calculate the distance until the next page break
+     * @param y the current y coordinate
+     * @return the distance in pixels until the next page break
+     */
     private static int spaceToNextPageBreak(int y) {
         int currentPageY;
         for (int i = 1; ; i++) {

@@ -101,6 +101,10 @@ public class RightAngleTrigonometric extends Problem implements Serializable {
         return image;
     }
 
+    /**
+     * Scale the sides so that the longest side is equal to IMAGE_HEIGHT. This ensures that all questions are consistent in their width
+     * @return the scaled sides
+     */
     private double[] getScaledSides() {
         //Determine the index of the longest side
         int longestSide = sides[0] > sides[1] ? 0 : 1;
