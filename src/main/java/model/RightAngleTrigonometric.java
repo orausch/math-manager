@@ -33,6 +33,10 @@ public class RightAngleTrigonometric extends Problem implements Serializable {
     private int botRightX;
     private int botRightY;
 
+    private double[] sides, angles;
+    private final double a3 = 90;
+    private boolean[] isGivenAngle, isGivenSide, isTarget;
+
 
     private final int TOP_LEFT = 0;
     private final int TOP_RIGHT = 1;
@@ -285,11 +289,6 @@ public class RightAngleTrigonometric extends Problem implements Serializable {
         final double RANGE = 0.1;
         return (correct >= (answer - RANGE)) && (correct <= (answer + RANGE));
     }
-
-    private double[] sides, angles;
-    private final double a3 = 90;
-    private boolean[] isGivenAngle, isGivenSide, isTarget;
-
 
     public RightAngleTrigonometric(char target, double answer, int unit, double[] sides, double[] angles, boolean[] isGivenSide, boolean[] isGivenAngle, int given, boolean[] isTarget) {
         this.target = target;
