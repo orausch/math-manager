@@ -11,6 +11,13 @@ public class QuadraticProblemFactory {
         return question;
     }
 
+    /**
+     * Generate a random quadratic equation with specified randomness ranges
+     * @param rangeA range of the a coefficient
+     * @param rangeB range of the b coefficient
+     * @param rangeX range of the first solution
+     * @return  the random quadratic equation
+     */
     private static Quadratic generateQuadratic(int rangeA, int rangeB, int rangeX) {
         //ax^2 + bx + c
         double b = Utility.getRandomNumber(-rangeB, rangeB);

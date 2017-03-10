@@ -148,7 +148,7 @@ class TestViewer {
                     File selectedFile = fileChooser.getSelectedFile();
                     selectedFile = new File(selectedFile.getAbsolutePath().concat(".pdf"));
 
-                    BufferedImage bufferedImage = getImage(testList.getSelectedValue(), true);
+                    BufferedImage bufferedImage = getImage(testList.getSelectedValue(), false);
 
                     assert bufferedImage != null;
                     int requiredPages = (int) Math.ceil(bufferedImage.getHeight() / PAGE_HEIGHT);

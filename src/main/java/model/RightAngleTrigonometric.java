@@ -44,17 +44,29 @@ public class RightAngleTrigonometric extends Problem implements Serializable {
     private final int BOT_RIGHT = 3;
     private int IMAGE_HEIGHT = 500;
     private int lastorientation;
-
+    /**
+     * Render the diagram for the question with random orientation
+     * @param zoomFactor the width of the image
+     * @param padding the distance from the diagram to the edge of the image, default 50
+     * @return the rendered image
+     */
     public BufferedImage getImage(int zoomFactor, boolean padding) {
         return getImage(zoomFactor, padding, (int) Utility.getRandomNumber(0, 3));
     }
     public int getLastOrientation(){
         return lastorientation;
     }
+    /**
+     * Render the diagram for the question with a specified orientation
+     * @param zoomFactor the width of the image
+     * @param padding the distance from the diagram to the edge of the image, default 50
+     * @param orientation the orientation of the triangle
+     * @return the rendered image
+     */
     public BufferedImage getImage(int zoomFactor, boolean padding, int orientation) {
         lastorientation = orientation;
         IMAGE_HEIGHT = zoomFactor;
-
+        
         final int PADDING;
         if (padding) {
             PADDING = 50;
@@ -63,13 +75,14 @@ public class RightAngleTrigonometric extends Problem implements Serializable {
             PADDING = 20;
         }
         final int RECTANGLE_SIZE = 10;
+	//initialise the image
         BufferedImage image = new BufferedImage(IMAGE_HEIGHT + PADDING * 2, (int) (getScaledSides()[1] + PADDING * 2), BufferedImage.TYPE_INT_ARGB);
 
+	//initialise Java 2D
         Graphics2D g = image.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        //Randomising rotation of the triangle
-
+        //Calcluate position of all four possible corners
         topLeftX = (int) (PADDING + ((IMAGE_HEIGHT - getScaledSides()[0]) / 2));
         topLeftY = PADDING;
 
@@ -83,6 +96,7 @@ public class RightAngleTrigonometric extends Problem implements Serializable {
         botRightY = (int) (PADDING + getScaledSides()[1]);
 
         g.setColor(new Color(0, 0, 0));
+	//Depending on orientation, draw the triangle and the 90 degree box symbol in the corner
         switch (orientation) {
             case TOP_LEFT:
                 drawTriangle(g, topRightX, topRightY, botLeftX, botLeftY, botRightX, botRightY);
@@ -101,6 +115,7 @@ public class RightAngleTrigonometric extends Problem implements Serializable {
                 g.draw(new Rectangle(topLeftX, topLeftY, RECTANGLE_SIZE, RECTANGLE_SIZE));
                 break;
         }
+	//Draw the required labels
         drawLabels(g, orientation);
         return image;
     }
