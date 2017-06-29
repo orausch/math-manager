@@ -7,7 +7,7 @@ A Swing based math problem generation program.
  * Create test using generated problems
 
 ## Building from source with Maven
-The source code can be built using [Apache Maven] (https://maven.apache.org/). After Maven is installed, simply navigate to the project root and build using:
+The source code can be built using [Apache Maven](https://maven.apache.org/). After Maven is installed, simply navigate to the project root and build using:
 ```
 $ mvn clean compile assembly:single
 ```
