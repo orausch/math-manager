@@ -1,11 +1,13 @@
 # Math Manager
-A Swing based math problem generation program. 
-[Screenshots can be found here](screenshots/screenshots.md)
+A Swing based math problem and test generation program.
+[Screenshots can be found here](screenshots/screenshots.md).
 
 ## Features
- * Generate various math problems randomly
+ * Generate various math problems randomly or using parameters
+ * View problems in a question browser
  * Store problems in a database
- * Create test using generated problems
+ * Create tests using stored problems
+ * Export tests in PDF format. [Example](screenshots/export.pdf)
 
 ## Building from source with Maven
 The source code can be built using [Apache Maven](https://maven.apache.org/). After Maven is installed, simply navigate to the project root and build using:
@@ -14,7 +16,6 @@ $ mvn clean compile assembly:single
 ```
 The built jar will be located in `target/`
 
-## Running tests
 Run tests with
 ```
 mvn test
