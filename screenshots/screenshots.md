@@ -5,7 +5,6 @@
 ![image](browser-trig.png)
 ![image](correct-answer.png)
 ![image](create-quad-question.png)
-![image](export.pdf)
 ![image](quad-question.png)
 ![image](test-browser.png)
 ![image](test-edit.png)

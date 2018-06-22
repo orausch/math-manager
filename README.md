@@ -1,5 +1,6 @@
 # Math Manager
 A Swing based math problem generation program. 
+[Screenshots can be found here](screenshots/screenshots.md)
 
 ## Features
  * Generate various math problems randomly
@@ -12,6 +13,12 @@ The source code can be built using [Apache Maven](https://maven.apache.org/). Af
 $ mvn clean compile assembly:single
 ```
 The built jar will be located in `target/`
+
+## Running tests
+Run tests with
+```
+mvn test
+```
 
 ## Dependencies
  * [h2database](https://github.com/h2database/h2database): a fast embedded Java SQL database
